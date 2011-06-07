@@ -14,11 +14,10 @@ class Ban extends LogInfo {
 		$this->__construct();
 		
 	//Characters to divide each entry will be added if the log file previously existed
-		$log = $this->directory . "tracker.log";
+		$log = $this->directory . "ban.log";
 		
 		if (file_exists($log)) {
-			$divider = "
-~";
+			$divider = "~";
 		} else {
 			$divider = "";
 		}
@@ -32,10 +31,10 @@ class Ban extends LogInfo {
 //Retrieve an entry from the ban list
 	public static function IsBanned($IPAddress) {
 	//Grab the information from the super class
-		parent::__construct();
+		$this->__construct();
 		
 	//Read the file
-		$log = $this->directory . "tracker.log";
+		$log = $this->directory . "ban.log";
 		$logHandle = fopen($log, "r");
 		$contents = fread($logHandle, filesize($log));
 		fclose($logHandle);

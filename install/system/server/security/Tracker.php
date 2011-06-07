@@ -11,14 +11,13 @@ class Tracker extends LogInfo {
 //Add an entry into the log
 	public static function NewLog() {
 	//Grab the information from the super class
-		parent::__construct();
+		$this->__construct();
 		
 	//Characters to divide each entry will be added if the log file previously existed
 		$log = $this->directory . "tracker.log";
 		
 		if (file_exists($log)) {
-			$divider = "
-~";
+			$divider = "~";
 		} else {
 			$divider = "";
 		}
@@ -36,7 +35,7 @@ class Tracker extends LogInfo {
 //Retrieve an entry from the log
 	public static function GetLogs() {
 	//Grab the information from the super class
-		parent::__construct();
+		$this->__construct();
 		
 	//If the log file does not exist, then return false
 		$log = $this->directory . "tracker.log";
