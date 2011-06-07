@@ -1,5 +1,12 @@
 <?php
-//Manage user authentication, such as logging in, logging out, failed logins, etc...
+/*
+ * This class contains a wide range of user management methods:
+ *  - login: Login a user
+ *  - logout: Logout a user
+ *  - loggedIn: Check to see if a user is logged in
+ *  - logAttempt: Log a failed login attempt
+ *  - userInfo: Get information regarding the currently logged-in user
+*/
 
 	class Authentication {
 	//Login a user
@@ -52,7 +59,7 @@
 			Misc::redirect(ROOT);
 		}
 		
-	//Check login status
+	//Check to see if a user is logged in
 		public static function loggedIn() {
 			if (isset($_SESSION['username']) && isset($_SESSION['role'])) {
 				return true;
@@ -72,7 +79,7 @@
 			));
 		}
 		
-	//Get the information of the logged-in user
+	//Get information regarding the currently logged-in user
 		public static function userInfo() {
 			global $db;
 			
