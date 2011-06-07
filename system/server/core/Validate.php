@@ -13,7 +13,7 @@
 		}
 		
 		public static function isArray($array, $size = false) {
-			if (!empty($array) && is_array($array) && count($array) > 0) {
+			if (!empty($array) && is_array($array) && count($array) == $size) {
 				for($count = 0; $count <= count($array); $count ++) {
 					self::required($array[$count]);
 				}
