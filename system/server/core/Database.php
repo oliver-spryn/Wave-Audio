@@ -6,7 +6,7 @@
 		function __construct() {
 			global $config;
 
-			$this->connection = mysql_connect($config->dbHost . ":" . $config->dbPort, $config->dbUserName, $config->dbPassword);
+			$this->connection = mysql_connect($config->dbHost . ":" . $config->dbPort, $config->dbUsername, $config->dbPassword);
 			
 			if (!$this->connection) {
 				die("<strong>Fatal error:</strong> The system could not connect to the database server. Please ensure that your database login credentials are correct, and that the server is not offline.\n<br /><br />\n" . mysql_error());
