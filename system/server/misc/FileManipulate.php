@@ -34,7 +34,7 @@ class FileManipulate {
 	//Check to see if the file exists
 		if (file_exists($file)) {
 		//Check to see if the file can be read
-			if (is_reable($file)) {
+			if (is_readable($file)) {
 				$fileOpen = fopen($file, "r");
 				$contents = fread($fileOpen, filesize($file));
 				fclose($fileOpen);
