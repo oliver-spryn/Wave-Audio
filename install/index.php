@@ -162,7 +162,7 @@ While you are setting up the database, make sure you write down the username and
 			//These values are automatically generated
 				$installAbsolute = str_replace("/install", "", dirname($_SERVER['PHP_SELF'])) . "/";
 				$installDomain = $_SERVER['HTTP_HOST'] . $installAbsolute;
-				$installRoot = strstr(dirname(__FILE__), "\\") ? str_replace("\install", "", dirname(__FILE__)) . "\\\\" : str_replace("/install", "", dirname(__FILE__)) . "/";
+				$installRoot = strstr(dirname(__FILE__), "\\") ? str_replace("\install", "", dirname(__FILE__)) . "\\" : str_replace("/install", "", dirname(__FILE__)) . "/";
 				$encryptedSalt = Misc::randomValue(50);
 				$sessionSuffix = Misc::randomValue(10, "alphaNumeric");
 				
@@ -180,12 +180,12 @@ While you are setting up the database, make sure you write down the username and
 	class Config {
 		public \$dbHost = \"" . $dbHost . "\";
 		public \$dbPort = \"" . $dbPort . "\";
-		public \$dbUsername = \"" . dbUsername . "\";
+		public \$dbUsername = \"" . $dbUsername . "\";
 		public \$dbPassword = \"" . $dbPassword . "\";
 		public \$dbName = \"" . $dbName . "\";
 		
 		public \$installDomain = \"" . $installDomain . "\";
-		public \$installRoot = \"" . $installRoot . "\";
+		public \$installRoot = \"" . addslashes($installRoot) . "\";
 		
 		public \$encryptedSalt = \"" . $encryptedSalt . "\";
 		public \$sessionSuffix = \"" . $sessionSuffix . "\";
@@ -231,6 +231,22 @@ ErrorDocument 404 " . $installAbsolute . "system/server/apache/index.php?error=4
 </IfModule>";
 				
 				FileManipulate::write($file, $contents);
+				
+			//Include the system super-core, now that the configuration file has been created
+				require_once("../system/server/index.php");
+				
+			//Install the database tables
+				if (strstr(dirname(__FILE__), "\\")) {
+					$file = $installRoot . "install\database.sql";
+				} else {
+					$file = $installRoot . "install/database.sql";
+				}
+				
+				foreach(FileManipulate::read($file, ";") as $query) {
+					if (!empty($query)) {
+						$db->query($query);
+					}
+				}
 				
 			//Redirect to next step
 				$_SESSION['installer']['step'] = "database";
