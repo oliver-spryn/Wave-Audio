@@ -20,16 +20,18 @@
 	define("STRIPPED_ROOT", $config->installDomain);
 	
 //Include the rest of the system's core. The order of the files in the "$include" array are important! Do not rearrange the order!
-	$include = array("core/Database.php", "users/Authentication.php", "layout/Template.php");
+	$include = array("core/Database.php", "users/Authentication.php");
 	
 	foreach($include as $script) {
 		require_once($config->installRoot . "system/server/" . $script);
 	}
 	
-//Start the session
-	session_save_path($config->installRoot . "data/system/sessions");
-	session_name("CMS_" . $config->sessionSuffix);
-	session_start();
+//Start the session	
+	if (session_id() == "") {
+		session_save_path($config->installRoot . "data/system/sessions");
+		session_name("CMS_" . $config->sessionSuffix);
+		session_start();
+	}
 	
 //Set server configurations
 	set_time_limit(3600);
