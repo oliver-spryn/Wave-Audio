@@ -11,3 +11,4 @@ class LogInfo {
 		$this->directory = strstr(dirname(__FILE__), "\\") ? str_replace("system\server\security", "", dirname(__FILE__)) : str_replace("system/server/security", "", dirname(__FILE__));
 	}
 }
+?>

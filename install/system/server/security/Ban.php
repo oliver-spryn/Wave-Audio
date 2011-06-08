@@ -50,3 +50,4 @@ class Ban extends LogInfo {
 		return false;
 	}
 }
+?>
