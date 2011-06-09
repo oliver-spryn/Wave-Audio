@@ -29,11 +29,14 @@ class Setup {
 <meta name=\"googlebot\" content=\"noindex, nofollow\" />
 <link rel=\"stylesheet\" type=\"text/css\" href=\"../system/stylesheets/universal.css\" />
 <link rel=\"stylesheet\" type=\"text/css\" href=\"../system/stylesheets/jquery-ui.min.css\" />
+<link rel=\"stylesheet\" type=\"text/css\" href=\"../system/stylesheets/uploadify.css\" />
+<script type=\"text/javascript\" src=\"../system/javascripts/swfobject.js\"></script>
 <script type=\"text/javascript\" src=\"../system/javascripts/jquery.min.js\"></script>
 <script type=\"text/javascript\" src=\"../system/javascripts/jquery-ui.min.js\"></script>
 <script type=\"text/javascript\" src=\"../system/javascripts/global.jquery.js\"></script>
 <script type=\"text/javascript\" src=\"../system/javascripts/analog.jquery.js\"></script>
 <script type=\"text/javascript\" src=\"../system/javascripts/funtip.jquery.js\"></script>
+<script type=\"text/javascript\" src=\"../system/javascripts/uploadify.jquery.min.js\"></script>
 <script type=\"text/javascript\" src=\"system/javascripts/install.jquery.js\"></script>
 ";
 	}

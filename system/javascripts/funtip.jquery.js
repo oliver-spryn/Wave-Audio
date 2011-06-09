@@ -48,7 +48,8 @@
 				'font-size' :'14px',
 				'padding' : '11px 0px 11px 10px',
 				'border-radius' : defaults.borderRadius,
-				'color' : defaults.inputTextColor
+				'color' : defaults.inputTextColor,
+				'resize' : 'none' //Disable textarea resize handles
 			};
 
 			var tip = {

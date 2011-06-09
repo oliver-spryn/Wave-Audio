@@ -42,7 +42,7 @@
 		$dbHost = Validate::required($_POST['dbHost']);
 		$dbPort = Validate::numeric($_POST['dbPort']);
 		$dbUsername = Validate::required($_POST['dbUsername']);
-		$dbPassword = Validate::required($_POST['dbPassword']);
+		$dbPassword = $_POST['dbPassword'];
 		$dbName = Validate::required($_POST['dbName']);
 		
 		if (mysql_connect($dbHost . ":" . $dbPort, $dbUsername, $dbPassword) && mysql_select_db($dbName)) {
@@ -71,10 +71,13 @@
 </div>";
 			
 			break;
-			
+	
+	//This is the database setup step
 		case "database" :			
 			$title = "Setup Database";
-			$content = "<p>This is the most essential step for getting your website up and running. Here, you are asked to fill in the credential for the system to access a database.
+			$content = "<p>Progress: <span class=\"progressContainer\"><span class=\"progress\" style=\"width: 25%;\">&nbsp;</span></span></p>
+<br />
+<p>This is the most essential step for getting your website up and running. Here, you are asked to fill in the credential for the system to access a database.
 <br /><br />
 You will need to log into your hosting provider's control panel, and create a MySQL database. MySQL is the most popular database technology used on the web, and therefore, it is very likely that your hosting provider will give you tools to create a MySQL database. If you have access to multiple database types, such as PostgreSQL, Oracle, Microsoft SQL, etc..., make sure you <strong>ONLY</strong> setup a MySQL database. This system will not work with any other database technology.
 <br /><br />
@@ -89,11 +92,11 @@ While you are setting up the database, make sure you write down the username and
 <table width=\"100%\">
 <tbody>
 <tr>
-<td width=\"300\"><p align=\"right\">Database connection URL:</p></td>
+<td width=\"300\"><p align=\"right\">Database connection URL<span class=\"require\">*</span>:</p></td>
 <td><input type=\"text\" name=\"dbHost\" class=\"dbHost required\" value=\"localhost\" id='{\"standard\" : \"Please provide a host URL\", \"required\" : \"A host URL is required\"}' /></td>
 </tr>
 <tr>
-<td width=\"300\"><p align=\"right\">Database connection port:</p></td>
+<td width=\"300\"><p align=\"right\">Database connection port<span class=\"require\">*</span>:</p></td>
 <td><input type=\"text\" name=\"dbPort\" class=\"dbPort required numeric\" value=\"3306\" id='{\"standard\" : \"Please provide a host port\", \"required\" : \"A host port is required\", \"error\" : \"A numeric value is required\"}' /></td>
 </tr>
 <tr>
@@ -101,7 +104,7 @@ While you are setting up the database, make sure you write down the username and
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td width=\"300\"><p align=\"right\">Database username:</p></td>
+<td width=\"300\"><p align=\"right\">Database username<span class=\"require\">*</span>:</p></td>
 <td><input type=\"text\" name=\"dbUsername\" class=\"dbUsername required\" id='{\"standard\" : \"Please provide a username\", \"required\" : \"A username is required\"}' /></td>
 </tr>
 <tr>
@@ -109,7 +112,7 @@ While you are setting up the database, make sure you write down the username and
 <td><input type=\"password\" name=\"dbPassword\" class=\"dbPassword\" id='{\"standard\" : \"Passwords may be optional\"}' /></td>
 </tr>
 <tr>
-<td width=\"300\"><p align=\"right\">Database name:</p></td>
+<td width=\"300\"><p align=\"right\">Database name<span class=\"require\">*</span>:</p></td>
 <td><input type=\"text\" name=\"dbName\" class=\"dbName required\" id='{\"standard\" : \"Provide a database name\", \"required\" : \"A database name is required\"}' /></td>
 </tr>
 </tbody>
@@ -119,6 +122,55 @@ While you are setting up the database, make sure you write down the username and
 
 <input type=\"button\" name=\"dbTest\" id=\"dbTest\" value=\"Test connection\" />
 <input type=\"submit\" name=\"dbSubmit\" id=\"dbContinue\" value=\"Continue\" disabled=\"disabled\" />
+</form>";
+			
+			break;
+			
+	//This is the site information setup step
+		case "siteInfo" : 
+			$title = "Site Information Setup";
+			$content = "<p>Progress: <span class=\"progressContainer\"><span class=\"progress\" style=\"width: 50%;\">&nbsp;</span></span></p>
+<br />
+<p>Now, the most critical and difficult part of the setup has been completed. For this step, begin setting up your site by providing details, such as the site's name, slogan, logo, and other customization options.</p>
+<p>&nbsp;</p>
+<p><span class=\"require\">*</span> indicates required field</p>
+
+<form action=\"" . $_SERVER['PHP_SELF'] . "\" method=\"POST\" enctype=\"multipart/form-data\">
+<table width=\"100%\">
+<tbody>
+<tr>
+<td width=\"300\"><p align=\"right\">Site name<span class=\"require\">*</span>:</p></td>
+<td><input type=\"text\" name=\"name\" class=\"name required\" id='{\"standard\" : \"This will show in the title\"}' /></td>
+</tr>
+<tr>
+<td width=\"300\"><p align=\"right\">Slogan:</p></td>
+<td><input type=\"text\" name=\"slogan\" class=\"slogan\" id='{\"standard\" : \"This will show in the header\"}' /></td>
+</tr>
+<tr>
+<td width=\"300\"><p align=\"right\">Logo<span class=\"require\">*</span>:</p></td>
+<td>
+<script type=\"text/javascript\">
+  $(document).ready(function() {
+  //Instantiate the uploadify plugin
+    $('#logo').uploadify({
+      'uploader' : '../system/flash/uploadify.swf',
+      'script' : 'index.php',
+      'cancelImg' : '../system/images/common/cancel.png'
+    });
+  });
+</script>
+<input type=\"file\" name=\"logo\" id=\"logo\" /></td>
+</tr>
+<tr>
+<td width=\"300\"><p align=\"right\">Footer text<span class=\"require\">*</span>:</p></td>
+<td><textarea name=\"footer\" class=\"footer required\" id='{\"standard\" : \"This will show in the footer\"}'></textarea></td>
+</tr>
+</tbody>
+</table>
+<br />
+<br />
+
+<input type=\"submit\" name=\"infoSubmit\" id=\"infoContinue\" value=\"Continue\" />
 </form>";
 			
 			break;
@@ -226,6 +278,49 @@ ErrorDocument 404 " . $installAbsolute . "system/server/apache/index.php?error=4
 				
 				FileManipulate::write($file, $contents);
 				
+			//Create the pseudo "robots.txt" file
+				$file = $installRoot . "robots.php";
+				$contents = "<?php
+//Include the system core and classes
+	require_once(\"system/server/index.php\");
+	
+//Output as a text file
+	header(\"Content-type:text/plain\");
+?>
+User-agent: *
+Disallow: 
+Sitemap: <?php echo ROOT; ?>sitemap.xml";
+				
+				FileManipulate::write($file, $contents);
+				
+			//Create the pseudo "sitemap.xml" file
+				$file = $installRoot . "sitemap.php";
+				$contents = "<?php
+//Include the system core and classes
+	require_once(\"system/server/index.php\");
+	
+//Output as an XML file
+	header(\"Content-type:text/xml\");
+	
+//The question marks are confusing the PHP server, so echo it manually
+	echo \"<?xml version=\\\"1.0\\\" encoding=\\\"utf-8\\\"?>\\n\";
+?>
+<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">
+<?php
+//Grab all of the dynamically created pages
+	\$pages = \$db->query(\"SELECT * FROM `pages`\", \"raw\");
+	
+	while(\$page = \$db->fetch(\$pages)) {
+		\" <url>
+  <loc>\" . ROOT . \"page.php</loc>
+  <priority>1.000</priority>
+ </url>\\n\";
+	}
+?>
+</urlset>";
+				
+				FileManipulate::write($file, $contents);
+				
 			//Include the system super-core, now that the configuration file has been created
 				require_once("../system/server/index.php");
 				
@@ -243,7 +338,7 @@ ErrorDocument 404 " . $installAbsolute . "system/server/apache/index.php?error=4
 				}
 				
 			//Redirect to next step
-				$_SESSION['installer']['step'] = "database";
+				$_SESSION['installer']['step'] = "siteInfo";
 				Misc::redirect($_SERVER['PHP_SELF']);
 			}
 			

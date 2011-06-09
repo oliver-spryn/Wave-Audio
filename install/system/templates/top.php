@@ -6,7 +6,7 @@
 <?php echo $headers; ?>
 <script type="text/javascript">
 	$(document).ready(function() {
-		$(':text, :password').funtip();
+		$(':text, :password, textarea').funtip();
 	});
 </script>
 </head>

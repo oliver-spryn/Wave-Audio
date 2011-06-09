@@ -7,6 +7,14 @@ img {
 	border: 0;
 }
 
+table td {
+	vertical-align: top;
+}
+
+span.require {
+	color: #FF0000;
+}
+
 /*
 Data Table Styles
 ---------------------------------------
