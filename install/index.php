@@ -89,34 +89,28 @@ While you are setting up the database, make sure you write down the username and
 <table width=\"100%\">
 <tbody>
 <tr>
-<td width=\"48%\"><p align=\"right\">Database connection URL:</p></td>
-<td width=\"4%\">&nbsp;</td>
-<td width=\"48%\"><input type=\"text\" name=\"dbHost\" class=\"dbHost\" value=\"localhost\" /></td>
+<td width=\"300\"><p align=\"right\">Database connection URL:</p></td>
+<td><input type=\"text\" name=\"dbHost\" class=\"dbHost required\" value=\"localhost\" id='{\"standard\" : \"Please provide a host URL\", \"required\" : \"A host URL is required\"}' /></td>
 </tr>
 <tr>
-<td width=\"48%\"><p align=\"right\">Database connection port:</p></td>
-<td width=\"4%\">&nbsp;</td>
-<td width=\"48%\"><input type=\"text\" name=\"dbPort\" class=\"dbPort\" value=\"3306\" /></td>
+<td width=\"300\"><p align=\"right\">Database connection port:</p></td>
+<td><input type=\"text\" name=\"dbPort\" class=\"dbPort required numeric\" value=\"3306\" id='{\"standard\" : \"Please provide a host port\", \"required\" : \"A host port is required\", \"error\" : \"A numeric value is required\"}' /></td>
 </tr>
 <tr>
-<td width=\"48%\">&nbsp;</td>
-<td width=\"4%\">&nbsp;</td>
-<td width=\"48%\">&nbsp;</td>
+<td width=\"300\">&nbsp;</td>
+<td>&nbsp;</td>
 </tr>
 <tr>
-<td width=\"48%\"><p align=\"right\">Database username:</p></td>
-<td width=\"4%\">&nbsp;</td>
-<td width=\"48%\"><input type=\"text\" name=\"dbUsername\" class=\"dbUsername\" /></td>
+<td width=\"300\"><p align=\"right\">Database username:</p></td>
+<td><input type=\"text\" name=\"dbUsername\" class=\"dbUsername required\" id='{\"standard\" : \"Please provide a username\", \"required\" : \"A username is required\"}' /></td>
 </tr>
 <tr>
-<td width=\"48%\"><p align=\"right\">Database password:</p></td>
-<td width=\"4%\">&nbsp;</td>
-<td width=\"48%\"><input type=\"password\" name=\"dbPassword\" class=\"dbPassword\" /></td>
+<td width=\"300\"><p align=\"right\">Database password:</p></td>
+<td><input type=\"password\" name=\"dbPassword\" class=\"dbPassword\" id='{\"standard\" : \"Passwords may be optional\"}' /></td>
 </tr>
 <tr>
-<td width=\"48%\"><p align=\"right\">Database name:</p></td>
-<td width=\"4%\">&nbsp;</td>
-<td width=\"48%\"><input type=\"text\" name=\"dbName\" class=\"dbName\" /></td>
+<td width=\"300\"><p align=\"right\">Database name:</p></td>
+<td><input type=\"text\" name=\"dbName\" class=\"dbName required\" id='{\"standard\" : \"Provide a database name\", \"required\" : \"A database name is required\"}' /></td>
 </tr>
 </tbody>
 </table>
