@@ -36,3 +36,27 @@ div.content {
 	-moz-box-shadow: 0 0 15px #22C3EB;
 	box-shadow: 0 0 15px #22C3EB;
 }
+
+span.progressContainer {
+	border: thin solid white;
+	border-radius: 5px;
+	display: block;
+	height: 10px;
+	-webkit-box-shadow: 0 0 15px #22C3EB;
+	-moz-box-shadow: 0 0 15px #22C3EB;
+	box-shadow: 0 0 15px #22C3EB;
+}
+
+span.progress {
+	background-color: #22C3EB;
+	display: block;
+	width: 0%;
+	height: 10px;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+span.progressFinished {
+	width: 100%;
+	border-radius: 5px;
+}
