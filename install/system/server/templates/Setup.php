@@ -27,6 +27,7 @@ class Setup {
 
 <meta name=\"robots\" content=\"noindex, nofollow\" />
 <meta name=\"googlebot\" content=\"noindex, nofollow\" />
+<link rel=\"stylesheet\" type=\"text/css\" href=\"../system/stylesheets/universal.css\" />
 <link rel=\"stylesheet\" type=\"text/css\" href=\"../system/stylesheets/jquery-ui.min.css\" />
 <script type=\"text/javascript\" src=\"../system/javascripts/jquery.min.js\"></script>
 <script type=\"text/javascript\" src=\"../system/javascripts/jquery-ui.min.js\"></script>
