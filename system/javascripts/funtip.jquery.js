@@ -296,10 +296,10 @@
 		
 	//Check to see whether the user provided a custom message, then generate one accordingly
 		$.fn.funtip.message = function(message, customMessage, fallbackMessage) {
-			if (message != '' && customMessage != null) {
-				return customMessage;
-			} else {
+			if (customMessage == null || customMessage == undefined) {
 				return fallbackMessage;
+			} else {
+				return customMessage;
 			}
 		};
 		
@@ -331,10 +331,11 @@
 			tipColorGood : '#F0FEE9', //Light green
 			tipColorBad : '#FFCFCF', //Light red
 			tipTextColor : '#000', //Black
-			hideTipOnSuccess : false,
+			hideTipOnSuccess : true,
 			
 		//Default error messages
 			standard : 'Please fill out this field',
+			required : 'This field is required',
 			error : 'This field is not valid',
 			success : 'This field is valid'
 		};
