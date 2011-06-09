@@ -31,6 +31,9 @@ class Setup {
 <script type=\"text/javascript\" src=\"../system/javascripts/jquery.min.js\"></script>
 <script type=\"text/javascript\" src=\"../system/javascripts/jquery-ui.min.js\"></script>
 <script type=\"text/javascript\" src=\"../system/javascripts/global.jquery.js\"></script>
+<script type=\"text/javascript\" src=\"../system/javascripts/analog.jquery.js\"></script>
+<script type=\"text/javascript\" src=\"../system/javascripts/funtip.jquery.js\"></script>
+<script type=\"text/javascript\" src=\"system/javascripts/install.jquery.js\"></script>
 ";
 	}
 

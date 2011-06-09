@@ -4,8 +4,11 @@
 <title><?php echo $name; ?> | <?php echo $title; ?></title>
 <link rel="stylesheet" type="text/css" href="system/templates/stylesheets/style.css" />
 <?php echo $headers; ?>
-<script type="text/javascript" src="system/javascripts/install.jquery.js"></script>
-<script type="text/javascript" src="../system/javascripts/analog.jquery.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(':text, :password').funtip();
+	});
+</script>
 </head>
 <body>
   <h1 class="header"><?php echo $name; ?></h1>
