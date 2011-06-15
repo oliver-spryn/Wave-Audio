@@ -23,24 +23,6 @@
 		
 	//Monitor the user's step
 		$_SESSION['installer']['step'] = "welcome";
-		
-	//Gather the entered data for building configuration scripts later
-		$_SESSION['installer']['data'] = array(
-			"dbHost" => "",
-			"dbPort" => "",
-			"dbUsername" => "",
-			"dbPassword" => "",
-			"dbName" => "",
-			
-			"installDomain" => "",
-			"installRoot" => "",
-			
-			"encryptedSalt" => "",
-			"sessionSuffix" => ""
-		);
-		
-	//Monitor validation data
-		$_SESSION['installer']['validation'] = array();
 	}
 	
 //Test to see if the supplied values allow access to the database
@@ -155,6 +137,8 @@ While you are setting up the database, make sure you write down the username and
 <p>Now, the most critical and difficult part of the setup has been completed. For this step, begin setting up your site by providing details, such as the site's name, slogan, logo, and other customization options.</p>
 <p>&nbsp;</p>
 <p><span class=\"require\">*</span> indicates required field</p>
+<br />
+<p><strong>Web Layout Setup</strong></p>
 
 <form action=\"" . $_SERVER['PHP_SELF'] . "\" method=\"POST\" enctype=\"multipart/form-data\">
 <table width=\"100%\">
@@ -168,22 +152,86 @@ While you are setting up the database, make sure you write down the username and
 <td><input type=\"text\" name=\"slogan\" class=\"slogan\" id='{\"standard\" : \"This will show in the header\"}' /></td>
 </tr>
 <tr>
+<td width=\"300\"><p align=\"right\">Footer text<span class=\"require\">*</span>:</p></td>
+<td><textarea name=\"footer\" class=\"footer required\" id='{\"standard\" : \"This will show in the footer\"}'></textarea></td>
+</tr>
+</tbody>
+</table>
+
+<br />
+<p><strong>Search Engine Optimization</strong></p>
+<table width=\"100%\">
+<tbody>
+<tr>
+<td width=\"300\"><p align=\"right\">Site author or publishing organization<span class=\"require\">*</span>:</p></td>
+<td><input type=\"text\" name=\"author\" class=\"author required\" /></td>
+</tr>
+<tr>
+<td width=\"300\"><p align=\"right\">Copyright statement<span class=\"require\">*</span>:</p></td>
+<td><textarea name=\"copyright\" class=\"copyright required\" id='{\"standard\" : \"Protect your content!\"}'></textarea></td>
+</tr>
+<tr>
+<td width=\"300\"><p align=\"right\">Search engine keywords<span class=\"require\">*</span>:</p></td>
+<td><textarea name=\"keywords\" class=\"keywords required\" id='{\"standard\" : \"Seperate with comma and space\"}'></textarea></td>
+</tr>
+<tr>
+<td width=\"300\"><p align=\"right\">Site description<span class=\"require\">*</span>:</p></td>
+<td><textarea name=\"description\" class=\"description required\" id='{\"standard\" : \"What is your site about?\"}'></textarea></td>
+</tr>
+</tbody>
+</table>
+
+<br />
+<p><strong>Final Touches</strong></p>
+<table width=\"100%\">
+<tbody>
+<tr>
 <td width=\"300\" class=\"uploadifyLabel\"><p align=\"right\">Logo<span class=\"require\">*</span>:</p></td>
 <td>
 <script type=\"text/javascript\">
   $(document).ready(function() {
-    $('#logo').uploadify();
+    $('#logo').uploadify({
+      'fileExt' : '*.jpg;*.bmp;*.png;*.gif;*.jpeg',
+      'fileDesc' : 'Image Files (jpg, bmp, png, gif, jpeg)'
+    });
   });
 </script>
 <input type=\"file\" name=\"logo\" id=\"logo\" />
 </td>
 </tr>
 <tr>
-<td width=\"300\"><p align=\"right\">Footer text<span class=\"require\">*</span>:</p></td>
-<td><textarea name=\"footer\" class=\"footer required\" id='{\"standard\" : \"This will show in the footer\"}'></textarea></td>
+<td width=\"300\" class=\"uploadifyLabel\"><p align=\"right\">Browser favicon<span class=\"require\">*</span>:</p></td>
+<td>
+<script type=\"text/javascript\">
+  $(document).ready(function() {
+    $('#icon').uploadify({
+      'fileExt' : '*.ico',
+      'fileDesc' : 'Icons (ico)'
+    });
+  });
+</script>
+<input type=\"file\" name=\"icon\" id=\"icon\" />
+</td>
+</tr>
+<tr>
+<td width=\"300\" class=\"uploadifyLabel\"><p align=\"right\">Flash &reg; content overlay ZIP file:</p></td>
+<td>
+<script type=\"text/javascript\">
+  $(document).ready(function() {
+    $('#flash').uploadify({
+      'fileExt' : '*.zip',
+      'fileDesc' : 'Zipped Folder with Flash Content (zip)',
+      'required' : false,
+      'showLinkOnComplete' : false
+    });
+  });
+</script>
+<input type=\"file\" name=\"flash\" id=\"flash\" />
+</td>
 </tr>
 </tbody>
 </table>
+
 <br />
 <br />
 
@@ -248,19 +296,19 @@ While you are setting up the database, make sure you write down the username and
 //This script is created during the automated setup process, and contains the core configuration and definitions of the system, which will be used globally.
 
 //Define the configuration class
-	class Config {
-		public \$dbHost = \"" . $dbHost . "\";
-		public \$dbPort = \"" . $dbPort . "\";
-		public \$dbUsername = \"" . $dbUsername . "\";
-		public \$dbPassword = \"" . $dbPassword . "\";
-		public \$dbName = \"" . $dbName . "\";
-		
-		public \$installDomain = \"" . $installDomain . "\";
-		public \$installRoot = \"" . addslashes($installRoot) . "\";
-		
-		public \$encryptedSalt = \"" . $encryptedSalt . "\";
-		public \$sessionSuffix = \"" . $sessionSuffix . "\";
-	}
+class Config {
+	public \$dbHost = \"" . $dbHost . "\";
+	public \$dbPort = \"" . $dbPort . "\";
+	public \$dbUsername = \"" . $dbUsername . "\";
+	public \$dbPassword = \"" . $dbPassword . "\";
+	public \$dbName = \"" . $dbName . "\";
+	
+	public \$installDomain = \"" . $installDomain . "\";
+	public \$installRoot = \"" . addslashes($installRoot) . "\";
+	
+	public \$encryptedSalt = \"" . $encryptedSalt . "\";
+	public \$sessionSuffix = \"" . $sessionSuffix . "\";
+}
 ?>";
 				
 				FileManipulate::write($file, $contents);
@@ -382,10 +430,28 @@ Sitemap: <?php echo ROOT; ?>sitemap.xml";
 				$uploader->allowedExt = array("jpg", "bmp", "png", "gif", "jpeg");
 				$result = $uploader->process();
 				
-			//A logo and browser icon are required, so track each of them in an array, since they can't be uploaded all at once
-				$_SESSION['installer']['validation'][] = "logo";
+				echo json_encode($result);
+				exit;
+			}
+			
+		//Listen for a favicon upload
+			if (isset($_FILES['icon']['size']) && $_FILES['icon']['size'] > 0) {
+				$uploader = new Upload();
+				$uploader->fileField = "icon";
+				$uploader->directory = "../system/images";
+				$uploader->required = true;
+				$uploader->addHashSuffix = false;
+				$uploader->renameTo = "favicon";
+				$uploader->allowedExt = array("ico");
+				$result = $uploader->process();
 				
 				echo json_encode($result);
+				exit;
+			}
+			
+		//Listen for a flash content ZIP package upload
+			if (isset($_FILES['flash']['size']) && $_FILES['flash']['size'] > 0) {
+				echo "rats";
 				exit;
 			}
 			
