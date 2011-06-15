@@ -12,7 +12,10 @@
 //Include other non-database dependant classes
 	require_once("../system/server/core/Validate.php");
 	require_once("../system/server/misc/Misc.php");
-	require_once("../system/server/misc/FileManipulate.php");
+	require_once("../system/server/files/FileManipulate.php");
+	require_once("../system/server/files/FileMisc.php");
+	require_once("../system/server/files/Mime.php");
+	require_once("../system/server/files/Upload.php");
 	
 //First-run initialization
 	if (!isset($_SESSION['installer'])) {
@@ -35,6 +38,9 @@
 			"encryptedSalt" => "",
 			"sessionSuffix" => ""
 		);
+		
+	//Monitor validation data
+		$_SESSION['installer']['validation'] = array();
 	}
 	
 //Test to see if the supplied values allow access to the database
@@ -75,7 +81,15 @@
 	//This is the database setup step
 		case "database" :			
 			$title = "Setup Database";
-			$content = "<p>Progress: <span class=\"progressContainer\"><span class=\"progress\" style=\"width: 25%;\">&nbsp;</span></span></p>
+			$content = "<script type=\"text/javascript\">
+  $(document).ready(function() {
+    $('.progress').animate({
+      width : '25%'
+    }, 2000);
+  });
+</script>
+
+<p>Progress: <span class=\"progressContainer\"><span class=\"progress\" style=\"width: 0%;\">&nbsp;</span></span></p>
 <br />
 <p>This is the most essential step for getting your website up and running. Here, you are asked to fill in the credential for the system to access a database.
 <br /><br />
@@ -129,7 +143,14 @@ While you are setting up the database, make sure you write down the username and
 	//This is the site information setup step
 		case "siteInfo" : 
 			$title = "Site Information Setup";
-			$content = "<p>Progress: <span class=\"progressContainer\"><span class=\"progress\" style=\"width: 50%;\">&nbsp;</span></span></p>
+			$content = "<script type=\"text/javascript\">
+  $(document).ready(function() {
+    $('.progress').animate({
+      width : '50%'
+    }, 2000);
+  });
+</script>
+<p>Progress: <span class=\"progressContainer\"><span class=\"progress\" style=\"width: 0%;\">&nbsp;</span></span></p>
 <br />
 <p>Now, the most critical and difficult part of the setup has been completed. For this step, begin setting up your site by providing details, such as the site's name, slogan, logo, and other customization options.</p>
 <p>&nbsp;</p>
@@ -147,19 +168,15 @@ While you are setting up the database, make sure you write down the username and
 <td><input type=\"text\" name=\"slogan\" class=\"slogan\" id='{\"standard\" : \"This will show in the header\"}' /></td>
 </tr>
 <tr>
-<td width=\"300\"><p align=\"right\">Logo<span class=\"require\">*</span>:</p></td>
+<td width=\"300\" class=\"uploadifyLabel\"><p align=\"right\">Logo<span class=\"require\">*</span>:</p></td>
 <td>
 <script type=\"text/javascript\">
   $(document).ready(function() {
-  //Instantiate the uploadify plugin
-    $('#logo').uploadify({
-      'uploader' : '../system/flash/uploadify.swf',
-      'script' : 'index.php',
-      'cancelImg' : '../system/images/common/cancel.png'
-    });
+    $('#logo').uploadify();
   });
 </script>
-<input type=\"file\" name=\"logo\" id=\"logo\" /></td>
+<input type=\"file\" name=\"logo\" id=\"logo\" />
+</td>
 </tr>
 <tr>
 <td width=\"300\"><p align=\"right\">Footer text<span class=\"require\">*</span>:</p></td>
@@ -176,8 +193,16 @@ While you are setting up the database, make sure you write down the username and
 			break;
 	}
 	
+//Since Flash does not obtain the session ID from the browser, then compensate below
+	if (isset($_POST['sessionID'])) {
+		$session = "siteInfo";
+//Browsers will revert to this
+	} else {
+		$session = $_SESSION['installer']['step'];
+	}
+	
 //Process the incomming form data
-	switch($_SESSION['installer']['step']) {
+	switch($session) {
 	//This is the welcome form
 		case "welcome" :
 			if (isset($_POST['welcomeSubmit'])) {
@@ -340,6 +365,28 @@ Sitemap: <?php echo ROOT; ?>sitemap.xml";
 			//Redirect to next step
 				$_SESSION['installer']['step'] = "siteInfo";
 				Misc::redirect($_SERVER['PHP_SELF']);
+			}
+			
+			break;
+		
+	//This is the site information form
+		case "siteInfo" : 
+		//Listen for a logo upload
+			if (isset($_FILES['logo']['size']) && $_FILES['logo']['size'] > 0) {
+				$uploader = new Upload();
+				$uploader->fileField = "logo";
+				$uploader->directory = "../system/images";
+				$uploader->required = true;
+				$uploader->addHashSuffix = false;
+				$uploader->renameTo = "logo";
+				$uploader->allowedExt = array("jpg", "bmp", "png", "gif", "jpeg");
+				$result = $uploader->process();
+				
+			//A logo and browser icon are required, so track each of them in an array, since they can't be uploaded all at once
+				$_SESSION['installer']['validation'][] = "logo";
+				
+				echo json_encode($result);
+				exit;
 			}
 			
 			break;
