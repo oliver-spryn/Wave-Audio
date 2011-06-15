@@ -7,8 +7,17 @@ img {
 	border: 0;
 }
 
+textarea {
+	font-family: Arial;
+}
+
 span.require {
 	color: #FF0000;
+}
+
+/* CSS replacement for the align attribute which is deprecated in HTML5 */
+.center {
+	text-align: center;
 }
 
 .hide {
