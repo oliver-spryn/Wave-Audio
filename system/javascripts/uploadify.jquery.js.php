@@ -65,7 +65,7 @@ if(jQuery)(
 					wmode             : 'transparent', // The wmode of the flash file
 					rollover          : true, //Whether or not to display a rollover and active image state. Use with 'buttonImg'.
 					auto              : true, //Whether or not to automatically upload the file when one is added to the queue
-					removeCompleted   : true, // Set to true if you want the queue items to be removed when a file is done uploading
+					removeCompleted   : false, // Set to true if you want the queue items to be removed when a file is done uploading
 					height            : 41, // The height of the flash button
 					width             : 134, // The width of the flash button
 					uploader          : '<?php echo STRIPPED_ROOT; ?>system/flash/uploadify.swf', // The path to the uploadify swf file
