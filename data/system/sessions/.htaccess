@@ -1,0 +1,2 @@
+# Deny all non-server access to these sessions
+deny from all
