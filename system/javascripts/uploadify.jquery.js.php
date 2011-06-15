@@ -139,10 +139,7 @@ if(jQuery)(
 				if (typeof(settings.onOpen) == 'function') {
 					jQuery(this).bind("uploadifyOpen", settings.onOpen);
 				}
-				jQuery(this).bind("uploadifySelect", {'action': settings.onSelect, 'queueID': settings.queueID}, function(event, ID, fileObj) {
-				//Developer Enhancement, which tells the validator that there is at least one file in queue
-					queued++;
-					
+				jQuery(this).bind("uploadifySelect", {'action': settings.onSelect, 'queueID': settings.queueID}, function(event, ID, fileObj) {					
 					if (event.data.action(event, ID, fileObj) !== false) {
 						var byteSize = Math.round(fileObj.size / 1024 * 100) * .01;
 						var suffix = 'KB';
@@ -178,6 +175,9 @@ if(jQuery)(
 					}
 				});
 				jQuery(this).bind("uploadifySelectOnce", {'action': settings.onSelectOnce}, function(event, data) {
+				//Developer Enhancement, which tells the validator that there is at least one file in queue
+					queued = data.fileCount;
+				
 					event.data.action(event, data);
 					if (settings.auto) {
 						if (settings.checkScript) { 
@@ -221,7 +221,7 @@ if(jQuery)(
 					if (event.data.action(event, ID, fileObj, data, clearFast) !== false) {
 						if (remove) {
 						//Developer Enhancement, which tells the validator that there is one less file in queue
-							queue--;
+							queued = data.fileCount;
 							
 							var fadeSpeed = (clearFast == true) ? 0 : 250;
 							
@@ -292,6 +292,9 @@ if(jQuery)(
 								
 							//Add the link to the newly uploaded file
 								.children('span.fileName').html('<a href="' + JSONResponse.URL + '" target="_blank">' + JSONResponse.fileName + '</a> - Completed');
+								
+							//Developer Enhancement, which tells the validator how many files were uploaded
+								uploaded++;
 							} else {
 							//Change the container background color
 								$('#' + jQuery(event.target).attr('id') + ID).animate({
@@ -300,6 +303,9 @@ if(jQuery)(
 								
 							//Add the "- Completed" message
 								jQuery("#" + jQuery(this).attr('id') + ID).find('.percentage').text(' - Completed');
+								
+							//Developer Enhancement, This is a failed upload, so back down the uploaded total
+								uploaded--;
 							}
 						} else {
 						//Change the container background color
@@ -342,10 +348,7 @@ if(jQuery)(
 				
 				if (typeof(settings.onAllComplete) == 'function') {
 					jQuery(this).bind("uploadifyAllComplete", {'action': settings.onAllComplete}, function(event, data) {
-						if (event.data.action(event, data) !== false) {
-						//Developer Enhancement, which tells the validator how many files were uploaded
-							uploaded = data.filesUploaded;
-							
+						if (event.data.action(event, data) !== false) {							
 							errorArray = [];
 						}
 					});
