@@ -36,7 +36,7 @@ class Setup {
 <script type=\"text/javascript\" src=\"../system/javascripts/global.jquery.js\"></script>
 <script type=\"text/javascript\" src=\"../system/javascripts/analog.jquery.js\"></script>
 <script type=\"text/javascript\" src=\"../system/javascripts/funtip.jquery.js\"></script>
-<script type=\"text/javascript\" src=\"../system/javascripts/uploadify.jquery.js.php\"></script>
+<script type=\"text/javascript\" src=\"../system/javascripts/uploadify.jquery.js\"></script>
 <script type=\"text/javascript\" src=\"system/javascripts/install.jquery.js\"></script>
 ";
 	}
