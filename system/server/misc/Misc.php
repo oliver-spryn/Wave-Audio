@@ -13,7 +13,7 @@ class Misc {
 	}
 	
 //Generate a random value
-	public static function randomValue($length = 10, $seeds = "anyCharacter") {
+	public static function randomValue($length = 10, $seeds = "alphaNumeric") {
 		$seedings['alpha'] = "abcdefghijklmnopqrstuvwqyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		$seedings['numeric'] = "0123456789";
 		$seedings['alphaNumeric'] = "abcdefghijklmnopqrstuvwqyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
