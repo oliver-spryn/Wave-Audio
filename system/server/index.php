@@ -15,12 +15,12 @@
 	$config = new Config();
 	
 //Detirmine the root address for the entire site, and include the "http://" if SSL is not active and "https://" if SSL is active
-	$_SERVER['HTTPS'] == "on" ? define("PROTOCOL", "https://") : define("PROTOCOL", "http://");
+	in_array('HTTPS', $_SERVER) && $_SERVER['HTTPS'] == "on" ? define("PROTOCOL", "https://") : define("PROTOCOL", "http://");
 	define("ROOT", PROTOCOL . $config->installDomain);
-	define("STRIPPED_ROOT", $config->installDomain);
+	define("STRIPPED_ROOT", str_replace($_SERVER['HTTP_HOST'], "", $config->installDomain));
 	
 //Include the rest of the system's core. The order of the files in the "$include" array are important! Do not rearrange the order!
-	$include = array("core/Database.php", "users/Authentication.php");
+	$include = array("core/Database.php", "users/Authentication.php", "files/Mime.php", "files/FileMisc.php", "files/Upload.php", "files/FileManipulate.php");
 	
 	foreach($include as $script) {
 		require_once($config->installRoot . "system/server/" . $script);
