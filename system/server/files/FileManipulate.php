@@ -13,13 +13,21 @@ class FileManipulate {
 		if (is_dir(dirname($file))) {
 		//Check if the existing file is writable, or doesn't exist at all
 			if ((file_exists($file) && is_writable($file)) || !file_exists($file)) {
+			//Add a divider, if one is requested, and there is content to divide
+				if ($entryDivider) {
+					$contents = self::read($file) == "" ? $contents : $entryDivider . $contents;
+				}
+				
 				$fileOpen = fopen($file, "c");
 				fwrite($fileOpen, $contents);
 				fclose($fileOpen);
 			} else {
 			//If the existing file is not writable, then try changing its permission, and trying again
+				$permissions = FileMisc::getPerms($file);
+				
 				if (chmod($file, 0777)) {
 					self::write($file, $contents);
+					chmod($file, $permissions);
 				} else {
 					die("The requested file is not writable.");
 				}
@@ -40,15 +48,18 @@ class FileManipulate {
 				fclose($fileOpen);
 				
 			//If there is an entry divider (such as a "/" breaking up each entry) then return an array of entries
-				if (is_string($entryDivider)) {
+				if ($entryDivider) {
 					return explode($entryDivider, $contents);
 				} else {
 					return $contents;
 				}
 			} else {
 			//If the file cannot be read, try changing it permissions and reading it again
+				$permissions = FileMisc::getPerms($file);
+				
 				if (chmod($file, 0777)) {
 					return self::read($file, $entryDivider);
+					chmod($file, $permissions);
 				} else {
 					die("The requested file is not readable.");
 				}
@@ -69,8 +80,11 @@ class FileManipulate {
 				fclose($fileOpen);
 			} else {
 			//If the existing file is not writable, then try changing its permission, and trying again
+				$permissions = FileMisc::getPerms($file);
+				
 				if (chmod($file, 0777)) {
 					self::clean($file);
+					chmod($file, $permissions);
 				} else {
 					die("The requested file is not writable.");
 				}
