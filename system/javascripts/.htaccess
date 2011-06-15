@@ -2,6 +2,7 @@
 	RewriteEngine On
 
 # If a specific file JavaScript does not exist, check to see if it ends with a PHP extension before giving a 404 error
-	RewriteCond %{SCRIPT_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule ^(.+)\.js$ $1.js.php [NC,L]
 </IfModule>
