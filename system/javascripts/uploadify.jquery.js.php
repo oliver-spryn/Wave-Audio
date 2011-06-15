@@ -56,15 +56,16 @@ if(jQuery)(
 					onClearQueue      : function() {}, // Function to run when the queue is manually cleared
 					onError           : function() {}, // Function to run when an upload item returns an error
 					onProgress        : function() {}, // Function to run each time the upload progress is updated
+					onComplete        : function() {}, // Function to run when an upload is completed
 					onAllComplete     : function() {}, // Function to run when all uploads are completed
 					
-					form              : jQuery(this).parents('form'), //Developer Enhancement: The form containing the uploader, part of the validation
+					form              : jQuery(this).parents('form'), // The form containing the uploader, part of the validation
 					fileDataName      : jQuery(this).attr('name'), // The name of the file collection object in the backend upload script
 					script            : document.location.href, // The path to the uploadify backend upload script
 					wmode             : 'transparent', // The wmode of the flash file
 					rollover          : true, //Whether or not to display a rollover and active image state. Use with 'buttonImg'.
 					auto              : true, //Whether or not to automatically upload the file when one is added to the queue
-					removeCompleted   : false, // Set to true if you want the queue items to be removed when a file is done uploading
+					removeCompleted   : true, // Set to true if you want the queue items to be removed when a file is done uploading
 					height            : 41, // The height of the flash button
 					width             : 134, // The width of the flash button
 					uploader          : '<?php echo STRIPPED_ROOT; ?>system/flash/uploadify.swf', // The path to the uploadify swf file
@@ -73,72 +74,10 @@ if(jQuery)(
 					scriptData        : {
 						'sessionID' : '<?php echo session_id(); ?>'
 					},
-					onComplete        : function(event, ID, fileObj, response, data) { // Function to run when an upload is completed
-					//This is most likely a JSON array if it begins with a "{" and ends with "}"
-						if (response.charAt(0) == '{' && response.charAt(response.length - 1) == '}') {
-							var JSONResponse = $.parseJSON(response);
-					          
-							if (JSONResponse.status == 'success') {
-							//Change the container background color
-								$('#' + ID).animate({
-									'background-color' : '#00FF66'
-								})
-							
-							//Add the link to the newly uploaded file
-								.children('span.fileName').html('<a href="' + JSONResponse.URL + '" target="_blank">' + JSONResponse.fileName + '</a> - Completed');
-							}
-						} else {
-						//Change the container background color
-							$('#' + ID).animate({
-								'background-color' : '#993333'
-							})
-							
-						//Create a hidden "div" with the error content
-							.append('<div class="uploadifyErrorMessage hide"></div>').children('div.uploadifyErrorMessage').html(response)
-							
-						//Notify the user of the problem
-							.siblings('span.fileName').html('There was an error during uploading. [<a href="javascript:;" class="uploadifyErrorTrigger">Details</a>]');
-							
-						//Listen for a request to view the error content
-							$('.uploadifyErrorTrigger').click(function() {
-								var content = $(this).parent().siblings('div.uploadifyErrorMessage').html();
-								
-								$('<div></div>').html(content).analog({
-									title : 'Upload Error',
-									width : 600,
-									height : 400,
-									buttons : {
-										'Close' : function() {
-											$(this).dialog('close');
-										}
-									}
-								});
-							});
-						}
-					},
 					
+					showLinkOnComplete: true, //Developer Enhancement: Whether or not to provide the link to the file on upload complete
 					required          : true, //Developer Enhancement: Whether or not this field is required
-					onRequiredFailed  : function(event, obj) { //Developer Enhancement: Function to run when validation fails
-						var flash = obj.parent().children('object');
-						
-						$('<span></span>').appendTo(document.body).css({
-							'position' : 'absolute',
-							'top' : flash.offset().top - 3,
-							'left' : flash.offset().left - 3,
-							'width' : flash.width() - 3,
-							'height' : flash.height() - 3,
-							'border' : 'red solid 3px'
-						}).animate({
-							'top' : flash.offset().top - 13,
-							'left' : flash.offset().left - 13,
-							'width' : flash.width() + 20,
-							'height' : flash.height() + 20,
-							'border' : 'red solid 3px',
-							'opacity' : '0'
-						}, 1500, function() {
-							$(this).remove();
-						});
-					}, 
+					onRequiredFailed  : function() {}, //Developer Enhancement: Function to run when validation fails
 					onRequiredSuccess : function() {} //Developer Enhancement: Function to run when validation passes
 				}, options);
 			//Developer Enhancement, which will privately track whether or not a file is in queue
@@ -227,18 +166,7 @@ if(jQuery)(
 							queue = '#' + event.data.queueID;
 						}
 						
-					//Developer Enhancement, removed the file upload ID from the queue div, and adds mouseover tip for image
-						/*jQuery(queue).append('<div id="' + jQuery(this).attr('id') + ID + '" class="uploadifyQueueItem">\
-								<div class="cancel">\
-									<a href="javascript:jQuery(\'#' + jQuery(this).attr('id') + '\').uploadifyCancel(\'' + ID + '\')"><img src="' + settings.cancelImg + '" border="0" /></a>\
-								</div>\
-								<span class="fileName">' + fileName + ' (' + byteSize + suffix + ')</span><span class="percentage"></span>\
-								<div class="uploadifyProgress">\
-									<div id="' + jQuery(this).attr('id') + ID + 'ProgressBar" class="uploadifyProgressBar"><!--Progress Bar--></div>\
-								</div>\
-							</div>');*/
-							
-						jQuery(queue).append('<div id="' + ID + '" class="uploadifyQueueItem">\
+						jQuery(queue).append('<div id="' + jQuery(this).attr('id') + ID + '" class="uploadifyQueueItem">\
 								<div class="cancel">\
 									<a href="javascript:jQuery(\'#' + jQuery(this).attr('id') + '\').uploadifyCancel(\'' + ID + '\')"><img src="' + settings.cancelImg + '" border="0" title="Remove box" /></a>\
 								</div>\
@@ -297,9 +225,7 @@ if(jQuery)(
 							
 							var fadeSpeed = (clearFast == true) ? 0 : 250;
 							
-						//Developer Enhancement, removed the file upload ID from the queue div
-							//jQuery("#" + jQuery(this).attr('id') + ID).fadeOut(fadeSpeed, function() { jQuery(this).remove() });
-							jQuery("#" + ID).fadeOut(fadeSpeed, function() { jQuery(this).remove() });
+							jQuery("#" + jQuery(this).attr('id') + ID).fadeOut(fadeSpeed, function() { jQuery(this).remove() });
 						}
 					}
 				});
@@ -345,12 +271,69 @@ if(jQuery)(
 					}
 				});
 				jQuery(this).bind("uploadifyComplete", {'action': settings.onComplete}, function(event, ID, fileObj, response, data) {
+					var response = unescape(response);
+					
 					if (event.data.action(event, ID, fileObj, unescape(response), data) !== false) {
-					//Developer Enhancement
+					//Developer Enhancement, removes the "- Completed" message and "100%"
 						//jQuery("#" + jQuery(this).attr('id') + ID).find('.percentage').text(' - Completed');
 						jQuery("#" + jQuery(this).attr('id') + ID).find('.percentage').text('');
 						
-						if (settings.removeCompleted) {
+					//Developer Enhancement, adds a custom message and color to the queue when complete
+					//This is most likely a JSON array if it begins with a "{" and ends with "}"
+						if (response.charAt(0) == '{' && response.charAt(response.length - 1) == '}') {
+							var JSONResponse = $.parseJSON(response);
+							
+						//Check whether or not to add the link to the newly uploaded file
+							if (settings.showLinkOnComplete) {
+							//Change the container background color
+								$('#' + jQuery(event.target).attr('id') + ID).animate({
+									'background-color' : '#00FF66'
+								})
+								
+							//Add the link to the newly uploaded file
+								.children('span.fileName').html('<a href="' + JSONResponse.URL + '" target="_blank">' + JSONResponse.fileName + '</a> - Completed');
+							} else {
+							//Change the container background color
+								$('#' + jQuery(event.target).attr('id') + ID).animate({
+									'background-color' : '#00FF66'
+								});
+								
+							//Add the "- Completed" message
+								jQuery("#" + jQuery(this).attr('id') + ID).find('.percentage').text(' - Completed');
+							}
+						} else {
+						//Change the container background color
+							$('#' + jQuery(event.target).attr('id') + ID).animate({
+								'background-color' : '#993333'
+							})
+							
+						//Create a hidden "div" with the error content
+							.append('<div class="uploadifyErrorMessage hide"></div>').children('div.uploadifyErrorMessage').html(response)
+							
+						//Notify the user of the problem
+							.siblings('span.fileName').html('There was an error during uploading. [<a href="javascript:;" class="uploadifyErrorTrigger">Details</a>]');
+							
+						//Listen for a request to view the error content
+							$('.uploadifyErrorTrigger').click(function() {
+								var content = $(this).parent().siblings('div.uploadifyErrorMessage').html();
+								
+								$('<div></div>').html(content).analog({
+									title : 'Upload Error',
+									width : 600,
+									height : 400,
+									buttons : {
+										'Close' : function() {
+											$(this).dialog('close');
+										}
+									}
+								});
+							});
+						}
+						
+					//Developer Enhancement, do not hide the box if an error is returned
+					//This is most likely a JSON array (which contains a success message) if it begins with a "{" and ends with "}"
+						//if (settings.removeCompleted) {
+						if (settings.removeCompleted && response.charAt(0) == '{' && response.charAt(response.length - 1) == '}') {
 							jQuery("#" + jQuery(event.target).attr('id') + ID).fadeOut(250,function() {jQuery(this).remove()});
 						}
 						jQuery("#" + jQuery(event.target).attr('id') + ID).addClass('completed');
@@ -373,6 +356,27 @@ if(jQuery)(
 					if (settings.required == true && (queued !== uploaded || queued == 0)) {
 						event.preventDefault();
 						settings.onRequiredFailed(event, uploader);
+						
+					//Add the validation error message
+						var flash = uploader.parent().children('object');
+						
+						$('<span></span>').appendTo(document.body).css({
+							'position' : 'absolute',
+							'top' : flash.offset().top - 3,
+							'left' : flash.offset().left - 3,
+							'width' : flash.width() - 3,
+							'height' : flash.height() - 3,
+							'border' : 'red solid 3px'
+						}).animate({
+							'top' : flash.offset().top - 13,
+							'left' : flash.offset().left - 13,
+							'width' : flash.width() + 20,
+							'height' : flash.height() + 20,
+							'border' : 'red solid 3px',
+							'opacity' : '0'
+						}, 1500, function() {
+							$(this).remove();
+						});
 					} else {
 						settings.onRequiredSuccess(event, uploader);
 					}
