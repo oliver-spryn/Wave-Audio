@@ -1,144 +1,263 @@
 <?php
-//Create a connection to the local database, and provide all of the necessary methods to safely create, read, update, and delete data from the database.
+/*
+ * This is one of the most essential and heavily used classes within the system. This class creates 
+ * a connection to a database, and provides all of the necessary methods to safely and easily create, 
+ * read, update, and delete data from the database:
+ *  - __construct: The constructor method which creates the connection to the database
+ *  - __desctruct: The destructor method which will close out a connection to the MySQL server at the end of each page
+ *  - query: Run a basic query on the database
+ *  - escape: Escape a value for safe storage in the database
+ *  - prepare (Private): Prepare stored database values for display
+ *  - fetch: Fetch the result of a database query and clean-up all of the values for display
+ *  - quick: Run a basic query on the database, and fetch the result
+ *  - RUDBase (Private): This is a base method to Read, Update, and Delete (RUD) database entries
+ *  - insert: A specialized method for inserting entries into a database, not for modifying a database or table structure
+ *  - read: A specialized method for reading database values
+ *  - update: A specialized method for updating database values, not for modifying a database or table structure
+ *  - delete: A specialized method for deleting database values, not for modifying a database or table structure
+*/
 	
-	class Database {
-	//Connect to the database
-		function __construct() {
-			global $config;
-
-			$this->connection = mysql_connect($config->dbHost . ":" . $config->dbPort, $config->dbUsername, $config->dbPassword);
-			
-			if (!$this->connection) {
-				die("<strong>Fatal error:</strong> The system could not connect to the database server. Please ensure that your database login credentials are correct, and that the server is not offline.\n<br /><br />\n" . mysql_error());
-			}
-			
-			$dbSelect = mysql_select_db($config->dbName, $this->connection);
-			
-			if (!$dbSelect) {
-				die("<strong>Fatal error:</strong> The system could not select the database. Please ensure that your database name is correct.\n<br /><br />\n" . mysql_error());
-			}
-		}
+class Database {
+//These variables are only used by the system for internal linking
+	private $connection;
+	
+//The constructor method which creates the connection to the database
+	public function __construct() {
+		global $config;
 		
-	//Clean-up stored database values
-		public function prepare($input, $htmlEncode = false, $stripSlashes = true) {
-			global $message;
-			
-			if ($stripSlashes == true) {
-				if ($htmlEncode == true) {
-					return htmlentities(stripslashes($input));
-				} else {
-					return stripslashes($input);
-				}
-			} else {
-				if ($htmlEncode == true) {
-					return htmlentities($input);
-				} else {
-					$error = debug_backtrace();
-					die("<strong>Warning:</strong> No action was performed on the returned database value on line " .  $error['0']['line']);
-				}
-			}
-		}
+	//Instantiate the "mysqli" class and connect to the database
+		$this->connection = new mysqli($config->dbHost, $config->dbUsername, $config->dbPassword, $config->dbName, $config->dbPort);
 		
-	//Run a "mysql_fetch_array()" command when the query selects all columns, or "mysql_fetch_assoc()" when only a few columns are selected
-		public function fetch($value, $fetchType = "array") {
-			if ($fetchType == "array") {
-				$result = mysql_fetch_array($value);
-			} else {
-				$result = mysql_fetch_assoc($value);
+	/*
+	 * Check to see if the connection to the database was successful. Checking for
+	 * "$this->connection->connect_error" is the offical object-oriented way to do it. However, this
+	 * instance variable was broken until PHP 5.2.9 and 5.3.0. To ensure maxmium compatibility, 
+	 * with older versions of PHP, the procedural way of checking the "mysqli_connect_error()"
+	 * function can be used. However, since these issues were fixed back in 2009, no "good" host should
+	 * be hosting such an old version of PHP.
+	*/
+		try {
+			if ($this->connection->connect_error) {
+				throw new Exception("<strong>Fatal error:</strong> The system could not connect to the database server. Please ensure that your database login credentials are correct, and that the server is not offline.
+<br /><br />
+[Error code] " . $this->connection->connect_errno . "
+<br />
+[Error message] " . $this->connection->connect_error);
 			}
-			
-			if ($result) {
-				$return = array();
-				
-				foreach ($result as $key => $value) {
-					if (PROTOCOL == "https://") {	
-						$return[$key] = str_replace(str_replace("https://", "http://", ROOT), ROOT, $this->prepare($value));
-					} else {
-						$return[$key] = $this->prepare($value);
-					}
-				}
-				
-				return $return;
-			} else {
-				return false;
-			}
-		}
-		
-	//Run and return a cleaned up version of "mysql_query()"
-		public function query($query, $returnType = false, $showError = true) {
-			$action = mysql_query($query, $this->connection);
-			
-		//If no value was returned from the query
-			if (!$action) {
-				if ($showError == true) {
-					$error = debug_backtrace();
-					die("<strong>Warning:</strong> There is an error with your query: \n" . $query . "\n<br /><br />\n" . mysql_error() . "\n<br /><br />\nError on line: " . $error['0']['line'] . "<br />\nError in file: " . $error['0']['file']);
-				} else {
-					return false;
-				}
-			} else {
-				if (!strstr($query, "INSERT INTO") && !strstr($query, "UPDATE") && !strstr($query, "SET") && !strstr($query, "CREATE TABLE") && !strstr($query, "ALTER TABLE") && !strstr($query, "DROP TABLE")) {
-					switch($returnType) {
-					//Fetch an array, and clean-up each value for display, DEFAULT BEHAVIOR
-						case false : 
-						case "array" : 
-							if ($result = $this->fetch($action)) {
-								//Do nothing, the array was sucessfully extracted
-							} else {
-								if ($showError == true) {
-									$error = debug_backtrace();
-									die("<strong>Warning:</strong> There is an error with your query: \n" . $query . "\n<br /><br />\nError on line: " . $error['0']['line'] . "<br />\nError in file: " . $error['0']['file']);
-								}
-							}
-							
-							if (is_array($result) && !empty($result)) {
-								return $result;
-							} else {
-								return false;
-							}
-							
-							break;
-							
-					//Return the raw resource
-						case "raw" : 
-							return $action;
-							break;
-								
-					//Return the number of rows
-						case "num" : 
-							$result = mysql_num_rows($action);
-							return $result;
-							break;
-							
-					//Fetch the array, where only certain rows are selected
-						case "selected" : 
-							if ($result = fetch($action, "assoc")) {
-								//Do nothing, the array was sucessfully extracted
-							} else {
-								if ($showError == true) {
-									$error = debug_backtrace();
-									die("<strong>Warning:</strong> There is an error with your query: \n" . $query . "\n<br /><br />\nError on line: " . $error['0']['line'] . "<br />\nError in file: " . $error['0']['file']);
-								}
-							}
-							
-							if (is_array($result) && !empty($result)) {
-								return $result;
-							} else {
-								return false;
-							}
-							
-							break;
-							
-					//Return an error if an unsupported return-type is requested
-						default : 
-							$error = debug_backtrace();
-							die("<strong>Warning:</strong> An invalid query return-type was requested on line " .  $error['0']['line']);
-							break;
-					}
-				}
-			}
+		} catch (Exception $e) {
+			die($e->getMessage());
 		}
 	}
+	
+//The destructor method which will close out a connection to the MySQL server at the end of each page
+	public function __destruct() {
+		$this->connection->close();
+	}
+	
+//Run a basic query on the database
+	public function query($query) {
+	//Run a query on the database an make sure is executed successfully
+		$result;
+		
+		try {
+			if ($result = $this->connection->query($query, MYSQLI_USE_RESULT)) {
+				$result->free();
+				$result->close();
+				
+				return $result;
+			} else {
+				$result->free();
+				$result->close();
+				$error = debug_backtrace();
+				
+				throw new Exception("<strong>Warning:</strong> There is an error with your query:
+<br /><br />
+[Query] " . $query . "
+<br />
+[MySQL Error] " . $mysqli->error . "
+<br />
+[Error on line] " . $error['0']['line'] . "
+<br />
+Error in file: " . $error['0']['file']);
+			}
+		} catch (Exception $e) {
+			$this->connection->close();
+			
+			die($e->getMessage());
+		}
+	}
+	
+//Escape a value for safe storage in the database
+	public function escape($input) {
+		return $this->connection->real_escape_string($input);
+	}
+	
+//Prepare stored database values for display
+	private function prepare($input, $htmlEncode = false, $stripSlashes = true) {		
+		$stripSlashes == true ? $input = stripslashes($input) : false;
+		$htmlEncode == true ? $input = htmlentities($input) : false;
+		
+		return $input;
+	}
+	
+//Fetch the result of a database query and clean-up all of the values for display
+	public function fetch($result, $fetchType = MYSQLI_BOTH) {
+	//Fetch the array
+		$result->fetch_array($fetchType);
+		
+		if ($result && is_array($result)) {
+		/*
+		 * The loop below has several purposes. It will:
+		 *  - replace all non-secure links, such as images and URLs, with secure links, if the current page is encrypted
+		 *  - clean-up escaped values from the database
+		*/
+			$return = array();
+			
+			foreach ($result as $key => $value) {
+				if (PROTOCOL == "https://") {	
+					$return[$key] = str_replace(str_replace("https://", "http://", ROOT), ROOT, $this->prepare($value));
+				} else {
+					$return[$key] = $this->prepare($value);
+				}
+			}
+			
+			return $return;
+		} else {
+			return false;
+		}
+	}
+	
+//Run a basic query on the database, and fetch the result
+	public function quick($query, $fetchType = MYSQLI_BOTH) {
+		$result = $this->query($query);
+		return $this->fetch($result, $fetchType);
+	}
+	
+/*
+ * The methods beyond this point are highly specialized to perform specific types of queries on a database.
+ * The above "query()" method's purpose is more general, and is best suited for queries like: "DROP TABLE 
+ * `mytable`". The methods below are accustomed to handling more complex input, such as unknown mixture of 
+ * strings and arrays, and parsing them into a query which is completly safe to create, read, update, 
+ * or delete entries, with minimial effort for future use. These methods do use the "query()" method when 
+ * they are ready to execute their query.
+*/
+	
+//This is a base method to Read, Update, and Delete (RUD) database entries
+	private function RUDBase($input) {
+		$query;
+		
+	//Parse the input in this loop
+		foreach($input as $argument) {
+		//Strings are simple to parse!
+			if (is_string($argument)) {
+			//Trim any whitespace before appending this string to the query
+				$query .= trim($argument) . " ";
+			}
+			
+		//Arrays require more logic
+			if (is_array($argument)) {
+				$values;
+				
+				foreach($argument as $key => $value) {
+					$values .= "`" . $key . "` = '" . $this->escape($value) . "', ";
+				}
+				
+				$query .= rtrim($values, ", ") . " ";
+			}
+		}
+		
+	//Finally run the parsed query
+		return $this->query(rtrim($query));
+	}
+	
+//A specialized method for inserting entries into a database, not for modifying a database or table structure
+	public function insert() {
+		$query;
+		$firstArrayParsed = false;
+		
+	//Since there is an unknown number of values, then grab all of the supplied arguments...
+		$arguments = func_get_args();
+		
+	// ... and parse them in this loop
+		foreach($arguments as $argument) {
+		//Strings are simple to parse!
+			if (is_string($argument)) {
+			//Trim any whitespace before appending this string to the query
+				$query .= trim($argument) . " ";
+			}
+			
+		//Arrays require more logic
+			if (is_array($argument)) {				
+			/*
+			 * If there are multiple arrays in the supplied arguments, then the *first* array will contain the values to be inserted,
+			 * according to SQL standard conventions. Before parsing the array into the query, check to see if the "$firstArrayParsed"
+			 * variable is "true" and process it accordingly.
+			*/
+				try {
+					$keys;
+					$values;
+					
+				//Has the INSERT portion been parsed already?
+					if (!$firstArrayParsed) {
+						$firstArrayParsed = true;
+					} else {
+						throw new Exception("The INSERT portion has been parsed");
+					}
+						
+					foreach($argument as $key => $value) {
+						$keys .= "`" . $key . "`, ";
+						
+					//json_encode() is a tad faster than serialize()
+						$values .= is_array($value) ? "'" . $this->escape(json_encode($input)) . "', " : "'" . $this->escape($input) . "' ,";
+					}
+					
+					$query .= "( " . rtrim($keys, ", ") . " ) VALUES ( " . trim($values, ", ") . " ";
+				} catch (Exception $e) {
+					$values;
+					
+					foreach($argument as $key => $value) {
+						$values .= "`" . $key . "` = '" . $this->escape($input) . "', ";
+					}
+					
+					$query .= rtrim($values, ", ") . " ";
+				}
+			}
+		}
+		
+	//Finally run the parsed query
+		return $this->query(rtrim($query)) ? true : false;
+	}
+	
+//A specialized method for reading database values
+	public function read() {
+	//Since there is an unknown number of values, then grab all of the supplied arguments...
+		$arguments = func_get_args();
+		
+	// ... and execute them in the base method
+		$result = $this->RUDBase($arguments);
+		
+	//Finally return the result
+		return $this->escape($result);
+	}
+	
+//A specialized method for updating database values, not for modifying a database or table structure
+	public function update() {
+	//Since there is an unknown number of values, then grab all of the supplied arguments...
+		$arguments = func_get_args();
+		
+	// ... and execute them in the base method
+		return $this->RUDBase($arguments) ? true : false;
+	}
+
+//A specialized method for deleting database values, not for modifying a database or table structure
+	public function delete() {
+	//Since there is an unknown number of values, then grab all of the supplied arguments...
+		$arguments = func_get_args();
+		
+	// ... and execute them in the base method
+		return $this->RUDBase($arguments) ? true : false;
+	} 
+}
 	
 //Instantiate the "Database" class to allow the system easily communicate with the database.
 	$database = new Database();
