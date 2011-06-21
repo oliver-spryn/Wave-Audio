@@ -83,7 +83,7 @@
 				var tipBox = container.children('span');
 				
 			//Grab all of the tip box messages
-				var message = $.parseJSON(input.attr('id')) ? $.parseJSON(input.attr('id')) : '';
+				var message = $.parseJSON(input.attr('title')) ? $.parseJSON(input.attr('title')) : '';
 				
 			//Add the respective styles to each element
 				input.css(inputStyle);
@@ -134,8 +134,26 @@
 					}
 					
 				//Check if this field is numeric
-					if (!input.hasClass('funtipInvalidField') && input.hasClass('numeric')) {
+					if ((!input.hasClass('funtipInvalidField') || !input.hasClass('required')) && input.hasClass('numeric')) {
 						$.fn.funtip.validate.numeric(input);
+						showMessage = $.fn.funtip.message(message, message.error, defaults.error);
+					}
+					
+				//Check if this field will carry an email address
+					if ((!input.hasClass('funtipInvalidField') || !input.hasClass('required')) && input.hasClass('email')) {
+						$.fn.funtip.validate.email(input);
+						showMessage = $.fn.funtip.message(message, message.error, defaults.error);
+					}
+					
+				//Check if this field has a minimium input limit
+					if ((!input.hasClass('funtipInvalidField') || !input.hasClass('required')) && input.attr('class') != undefined && input.attr('class').indexOf('min') !== -1) {
+						$.fn.funtip.validate.min(input);
+						showMessage = $.fn.funtip.message(message, message.error, defaults.error);
+					}
+					
+				//Check if this field has a maxmium input limit
+					if ((!input.hasClass('funtipInvalidField') || !input.hasClass('required')) && input.attr('class') != undefined && input.attr('class').indexOf('max') !== -1) {
+						$.fn.funtip.validate.max(input);
 						showMessage = $.fn.funtip.message(message, message.error, defaults.error);
 					}
 					
@@ -272,6 +290,17 @@
 		
 	//Form element validation
 		$.fn.funtip.validate = {
+		//A base method for handling optional validations with an supplied condition
+			base : function(input, condition) {
+				if ((!input.hasClass('required') && input.val().length == 0) || (input.val().length > 0 && condition)) {
+					input.removeClass('funtipInvalidField');
+					return true;
+				} else {
+					input.addClass('funtipInvalidField');
+					return false;
+				}
+			},
+			
 		//Check if a value is provided
 			required : function(input) {
 				if (input.val() == "") {
@@ -285,13 +314,42 @@
 		
 		//Check if only numbers are provided
 			numeric : function(input) {
-				if ($.fn.funtip.validate.required(input) && !isNaN(input.val())) {
+				if ((!input.hasClass('required') && input.val().length == 0) || (input.val().length > 0 && !isNaN(input.val()))) {
 					input.removeClass('funtipInvalidField');
 					return true;
 				} else {
 					input.addClass('funtipInvalidField');
 					return false;
 				}
+			},
+			
+		//Check if an email address is provided
+			email : function(input) {
+				var filter = /^([a-zA-Z0-9])(([a-zA-Z0-9])*([\._\+-])*([a-zA-Z0-9]))*@(([a-zA-Z0-9\-])+(\.))+([a-zA-Z]{2,4})+$/;
+				var value = input.val();
+				
+				return $.fn.funtip.validate.base(input, value.search(filter) !== -1);
+			},
+			
+		//Check for a minimium provided value
+			min : function(input) {
+				var regex = /min\[(.*?)\]/;
+				var match = regex.exec(input.attr('class'));
+				var min = match[1];
+				var value = input.val();
+				
+				return $.fn.funtip.validate.base(input, value.length >= min);
+			},
+			
+		//Check for a maxmium provided value
+			max : function(input) {
+				var regex = /max\[(.*?)\]/;
+				var match = regex.exec(input.attr('class'));
+				var max = match[1];
+				var value = input.val();
+				
+				
+				return $.fn.funtip.validate.base(input, value.length <= max);
 			}
 		};
 		
