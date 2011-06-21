@@ -21,7 +21,7 @@
 			}
 			
 		//Calculate the dialog's distance from the top of the window based on the supplied values
-			var distance = $(document).height() - (($(document).height() / 2) + (defaults.height / 2));
+			var distance = $(window).height() - (($(window).height() / 2) + (defaults.height / 2));
 			
 		//Manually build the overlay, great for visual animation			
 			$('<div class="ui-widget-overlay"></div>').appendTo(document.body).hide().width($(document).width()).height($(document).height()).fadeTo(fadeTime, defaults.overlayOpacity, function() {				
