@@ -85,6 +85,9 @@
 			//Grab all of the tip box messages
 				var message = $.parseJSON(input.attr('title')) ? $.parseJSON(input.attr('title')) : '';
 				
+			//Clear the "title" attribute so the JSON array isn't displayed on mouse over
+				input.removeAttr('title');
+				
 			//Add the respective styles to each element
 				input.css(inputStyle);
 				container.css(glowBox);
