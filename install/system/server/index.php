@@ -1,5 +1,8 @@
 <?php
 /*
+ * By using this application, you are bound the license agreement set forth on
+ * this page: http://docs.forwardfour.com/index.php/License
+ * 
  * This script is the core of the "install" module. The structure of this script is very similar to
  * the application super-core, however, it is focused on a much smaller scope, and is not dependant
  * on the global configuration files which will be created later. 
@@ -11,18 +14,22 @@
 /*
  * This is the only module which does not use the "$installRoot" instance variable from the "Config" class
  * to include necessary files from unknown directories. The "$installRoot" instaince variable will be made 
- * avaliable to all other other PHP scripts once the installer creates the "Config" class.
+ * avaliable to all other other PHP modules once the installer creates the "Config" class.
  * 
  * The below code is a way for this module obtain an absoulte URL reference.
 */
 	strstr(dirname(__FILE__), "\\") ? $scriptRoot = str_replace("system\server", "", dirname(__FILE__)) : $scriptRoot = str_replace("system/server", "", dirname(__FILE__));
 	
-//Include the rest of the module's core. The order of the files in the "$include" array are important! Do not rearrange the order!
-	$include = array("security/LogInfo.php", "security/Ban.php", "security/Tracker.php", "templates/Setup.php");
+//Include the rest of the module's core
+	require_once($scriptRoot . "system/server/templates/Setup.php");
 	
-	foreach($include as $script) {
-		require_once($scriptRoot . "system/server/" . $script);
-	}
+//Include other non-database dependant classes from the system's core
+	require_once("../system/server/core/Validate.php");
+	require_once("../system/server/misc/Misc.php");
+	require_once("../system/server/files/FileManipulate.php");
+	require_once("../system/server/files/FileMisc.php");
+	require_once("../system/server/files/Mime.php");
+	require_once("../system/server/files/Upload.php");
 	
 //Start the session
 	session_start();
