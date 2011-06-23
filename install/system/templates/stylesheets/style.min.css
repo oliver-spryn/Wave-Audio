@@ -1,0 +1,6 @@
+/*
+ * By using this application, you are bound the license agreement set forth on
+ * this page: http://docs.forwardfour.com/index.php/License
+*/
+
+*{margin:0;padding:0}body{background:url(../images/background.png) top center repeat-x fixed;background-color:#666;font-family:Arial;color:white;width:100%;height:100%}header h1{position:absolute;top:10px;left:20px}article.content{border:thin white solid;border-radius:5px;background-color:#827f80;padding:20px;margin:75px 100px 75px 100px;box-shadow:0 0 15px #22c3eb}h3{font-size:15px}section.progress{padding-top:15px}progress{border:thin solid white;border-radius:5px;display:block;height:10px;box-shadow:0 0 15px #22c3eb;width:100%}span.progressBar{background-color:#22c3eb;display:block;width:0;height:10px;border-top-left-radius:5px;border-bottom-left-radius:5px}
