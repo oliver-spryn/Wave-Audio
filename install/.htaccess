@@ -1,0 +1,5 @@
+# Deny access to the SQL file
+<Files ~ "\.(sql)$">
+	order deny,allow
+	deny from all
+</Files>
