@@ -1,4 +1,7 @@
 /*
+ * By using this application, you are bound the license agreement set forth on
+ * this page: http://docs.forwardfour.com/index.php/License
+ * 
  * This JavaScript file contains references which will be used throughout the system installation
  * process, mainly to speed up performance, and introduce a more interactive experience.
 */
