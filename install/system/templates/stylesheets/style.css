@@ -1,4 +1,9 @@
 /*
+ * By using this application, you are bound the license agreement set forth on
+ * this page: http://docs.forwardfour.com/index.php/License
+*/
+
+/*
 General
 ---------------------------------------
 */
@@ -13,6 +18,8 @@ body {
 	background-color: #666666;
 	font-family: Arial;
 	color: white;
+	width: 100%;
+	height: 100%;
 }
 
 /*
@@ -20,13 +27,13 @@ Content
 ---------------------------------------
 */
 
-h1.header {
+header h1 {
 	position: absolute;
 	top: 10px;
 	left: 20px;
 }
 
-div.content {
+article.content {
 	border: thin white solid;
 	border-radius: 5px;
 	background-color: #827F80;
@@ -37,7 +44,15 @@ div.content {
 	box-shadow: 0 0 15px #22C3EB;
 }
 
-span.progressContainer {
+h3 {
+	font-size: 15px;
+}
+
+section.progress {
+	padding-top: 15px;
+}
+
+progress {
 	border: thin solid white;
 	border-radius: 5px;
 	display: block;
@@ -47,16 +62,11 @@ span.progressContainer {
 	box-shadow: 0 0 15px #22C3EB;
 }
 
-span.progress {
+span.progressBar {
 	background-color: #22C3EB;
 	display: block;
 	width: 0%;
 	height: 10px;
 	border-top-left-radius: 5px;
 	border-bottom-left-radius: 5px;
-}
-
-span.progressFinished {
-	width: 100%;
-	border-radius: 5px;
 }
