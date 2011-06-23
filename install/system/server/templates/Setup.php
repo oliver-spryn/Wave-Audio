@@ -1,7 +1,10 @@
 <?php
 /*
+ * By using this application, you are bound the license agreement set forth on
+ * this page: http://docs.forwardfour.com/index.php/License
+ * 
  * This class will used to introduce dynamic content to each of the static HTML 
- * administration templates:
+ * installation templates:
  *  - __construct: Assign the dynamic variables for the tempate
  *  - top: Import and build the template's beginning
  *  - bottom: Import and build the template's ending
@@ -11,6 +14,7 @@ class Setup {
 //Defined from script
 	private $name;
 	private $headers;
+	private $lang;
 
 //Defined on as-needed basis
 	public $title;
@@ -20,25 +24,21 @@ class Setup {
 	//The name of this module
 		$this->name = "Setup Wizard";
 		
-	//Meta information
-		$this->headers = "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />
-<meta http-equiv=\"content-language\" content=\"en\" />
-<meta name=\"resource-type\" content=\"document\" />
+	//Meta information, styles, and JavaScripts
+		$this->headers = "<meta charset=\"UTF-8\">
+<meta name=\"robots\" content=\"noindex,nofollow\">
+<meta name=\"googlebot\" content=\"noindex,nofollow\">
 
-<meta name=\"robots\" content=\"noindex, nofollow\" />
-<meta name=\"googlebot\" content=\"noindex, nofollow\" />
-<link rel=\"stylesheet\" type=\"text/css\" href=\"../system/stylesheets/universal.css\" />
-<link rel=\"stylesheet\" type=\"text/css\" href=\"../system/stylesheets/jquery-ui.min.css\" />
-<link rel=\"stylesheet\" type=\"text/css\" href=\"../system/stylesheets/uploadify.css\" />
-<script type=\"text/javascript\" src=\"../system/javascripts/swfobject.js\"></script>
-<script type=\"text/javascript\" src=\"../system/javascripts/jquery.min.js\"></script>
-<script type=\"text/javascript\" src=\"../system/javascripts/jquery-ui.min.js\"></script>
-<script type=\"text/javascript\" src=\"../system/javascripts/global.jquery.js\"></script>
-<script type=\"text/javascript\" src=\"../system/javascripts/analog.jquery.js\"></script>
-<script type=\"text/javascript\" src=\"../system/javascripts/funtip.jquery.js\"></script>
-<script type=\"text/javascript\" src=\"../system/javascripts/uploadify.jquery.js\"></script>
-<script type=\"text/javascript\" src=\"system/javascripts/install.jquery.js\"></script>
+<link rel=\"stylesheet\" href=\"../system/stylesheets/superpackage.desktop.css\" />
+<link rel=\"stylesheet\" href=\"system/stylesheets/style.min.css\" />
+<script src=\"../system/javascripts/superpackage.desktop.js\"></script>
+<script src=\"system/javascripts/install.jquery.min.js\"></script>
+<script src=\"../system/javascripts/swfobject.js\"></script>
+<script src=\"../system/javascripts/uploadify.jquery.js\"></script>
 ";
+		
+	//The document language
+		$this->lang = " lang=\"en-US\"";
 	}
 
 //Import and build the template's beginning
@@ -48,6 +48,7 @@ class Setup {
 		$name = $this->name;
 		$title = $this->title;
 		$headers = $this->headers;
+		$lang = $this->lang;
 			
 		require_once($scriptRoot . "system/templates/top.php");
 	}
