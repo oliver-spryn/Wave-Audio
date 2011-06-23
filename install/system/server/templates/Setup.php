@@ -5,7 +5,7 @@
  * 
  * This class will used to introduce dynamic content to each of the static HTML 
  * installation templates:
- *  - __construct: Assign the dynamic variables for the tempate
+ *  - __construct: Assign the dynamic variables for the template
  *  - top: Import and build the template's beginning
  *  - bottom: Import and build the template's ending
 */
@@ -26,8 +26,8 @@ class Setup {
 		
 	//Meta information, styles, and JavaScripts
 		$this->headers = "<meta charset=\"UTF-8\">
-<meta name=\"robots\" content=\"noindex,nofollow\">
-<meta name=\"googlebot\" content=\"noindex,nofollow\">
+<meta name=\"robots\" content=\"noindex, nofollow\">
+<meta name=\"googlebot\" content=\"noindex, nofollow\">
 
 <link rel=\"stylesheet\" href=\"../system/stylesheets/superpackage.desktop.css\" />
 <link rel=\"stylesheet\" href=\"system/stylesheets/style.min.css\" />
