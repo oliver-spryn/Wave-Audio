@@ -39,9 +39,7 @@ article.content {
 	background-color: #827F80;
 	padding: 20px;
 	margin: 75px 100px 75px 100px;
-	-webkit-box-shadow: 0 0 15px #22C3EB;
-	-moz-box-shadow: 0 0 15px #22C3EB;
-	box-shadow: 0 0 15px #22C3EB;
+	box-shadow: 0px 0px 15px #22C3EB;
 }
 
 h3 {
@@ -57,9 +55,8 @@ progress {
 	border-radius: 5px;
 	display: block;
 	height: 10px;
-	-webkit-box-shadow: 0 0 15px #22C3EB;
-	-moz-box-shadow: 0 0 15px #22C3EB;
-	box-shadow: 0 0 15px #22C3EB;
+	box-shadow: 0px 0px 15px #22C3EB;
+	width: 100%;
 }
 
 span.progressBar {
