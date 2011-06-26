@@ -1,4 +1,7 @@
 /*
+ * By using this application, you are bound the license agreement set forth on
+ * this page: http://docs.forwardfour.com/index.php/License
+ * 
  * "Analog" is a simple animated dialog box. "Analog" comes from the word "animated" and "dialog".
  * This plugin utilizes the jQuery UI dialog, however, it adds a fly effect upon entry and exit.
 */
