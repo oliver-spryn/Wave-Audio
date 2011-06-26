@@ -57,28 +57,21 @@ class Database {
 //Run a basic query on the database
 	public function query($query) {
 	//Run a query on the database an make sure is executed successfully
-		$result;
-		
 		try {
 			if ($result = $this->connection->query($query, MYSQLI_USE_RESULT)) {
-				$result->free();
-				$result->close();
-				
 				return $result;
 			} else {
-				$result->free();
-				$result->close();
 				$error = debug_backtrace();
 				
 				throw new Exception("<strong>Warning:</strong> There is an error with your query:
 <br /><br />
-[Query] " . $query . "
+<strong>[Query]</strong> " . $query . "
 <br />
-[MySQL Error] " . $mysqli->error . "
+<strong>[MySQL Error]</strong> " . $this->connection->error . "
 <br />
-[Error on line] " . $error['0']['line'] . "
+<strong>[Error on line]</strong> " . $error['0']['line'] . "
 <br />
-Error in file: " . $error['0']['file']);
+<strong>[Error in file]</strong> " . $error['0']['file']);
 			}
 		} catch (Exception $e) {
 			$this->connection->close();
@@ -101,9 +94,9 @@ Error in file: " . $error['0']['file']);
 	}
 	
 //Fetch the result of a database query and clean-up all of the values for display
-	public function fetch($result, $fetchType = MYSQLI_BOTH) {
+	public function fetch($result, $fetchType = MYSQLI_ASSOC) {
 	//Fetch the array
-		$result->fetch_array($fetchType);
+		$result = $result->fetch_array($fetchType);
 		
 		if ($result && is_array($result)) {
 		/*
@@ -172,7 +165,7 @@ Error in file: " . $error['0']['file']);
 	
 //A specialized method for inserting entries into a database, not for modifying a database or table structure
 	public function insert() {
-		$query;
+		$query = "";
 		$firstArrayParsed = false;
 		
 	//Since there is an unknown number of values, then grab all of the supplied arguments...
@@ -194,8 +187,8 @@ Error in file: " . $error['0']['file']);
 			 * variable is "true" and process it accordingly.
 			*/
 				try {
-					$keys;
-					$values;
+					$keys = "";
+					$values = "";
 					
 				//Has the INSERT portion been parsed already?
 					if (!$firstArrayParsed) {
@@ -208,15 +201,15 @@ Error in file: " . $error['0']['file']);
 						$keys .= "`" . $key . "`, ";
 						
 					//json_encode() is a tad faster than serialize()
-						$values .= is_array($value) ? "'" . $this->escape(json_encode($input)) . "', " : "'" . $this->escape($input) . "' ,";
+						$values .= is_array($value) ? "'" . $this->escape(json_encode($value)) . "', " : "'" . $this->escape($value) . "', ";
 					}
 					
-					$query .= "( " . rtrim($keys, ", ") . " ) VALUES ( " . trim($values, ", ") . " ";
+					$query .= "( " . rtrim($keys, ", ") . " ) VALUES ( " . trim($values, ", ") . ") ";
 				} catch (Exception $e) {
-					$values;
+					$values = "";
 					
 					foreach($argument as $key => $value) {
-						$values .= "`" . $key . "` = '" . $this->escape($input) . "', ";
+						$values .= "`" . $key . "` = '" . $this->escape($value) . "', ";
 					}
 					
 					$query .= rtrim($values, ", ") . " ";
