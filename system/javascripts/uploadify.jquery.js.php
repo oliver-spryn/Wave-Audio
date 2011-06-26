@@ -127,9 +127,45 @@ if(jQuery)(
 				if (settings.onInit() !== false) {
 					jQuery(this).css('display','none');
 					jQuery(this).after('<div id="' + jQuery(this).attr('id') + 'Uploader"></div>');
+					
 					swfobject.embedSWF(settings.uploader, settings.id + 'Uploader', settings.width, settings.height, '9.0.24', settings.expressInstall, data, {'quality':'high','wmode':settings.wmode,'allowScriptAccess':settings.scriptAccess},{},function(event) {
 						if (typeof(settings.onSWFReady) == 'function' && event.success) settings.onSWFReady();
 					});
+					
+					/*
+				//The flash object
+					$('<object></object>')
+					.attr('id', settings.id + 'Uploader')
+					.attr('data', settings.uploader)
+					.attr('type', 'application/x-shockwave-flash')
+					.attr('height', settings.height)
+					.attr('width', settings.width)
+					.insertAfter(uploader);
+					
+				//The quality parameter
+					$('<param>')
+					.attr('value', 'high')
+					.attr('name', 'quality')
+					.appendTo('object#' + settings.id + 'Uploader');
+					
+				//The wmode parameter
+					$('<param>')
+					.attr('value', settings.wmode)
+					.attr('name', 'wmode')
+					.appendTo('object#' + settings.id + 'Uploader');
+					
+				//The allowScriptAccess parameter
+					$('<param>')
+					.attr('value', settings.scriptAccess)
+					.attr('name', 'allowScriptAccess')
+					.appendTo('object#' + settings.id + 'Uploader');
+					
+				//Annnnd everything else :)
+					$('<param>')
+					.attr('value', $.param(data))
+					.attr('name', 'flashvars')
+					.appendTo('object#' + settings.id + 'Uploader');
+					*/
 					if (settings.queueID == false) {
 						jQuery("#" + jQuery(this).attr('id') + "Uploader").after('<div id="' + jQuery(this).attr('id') + 'Queue" class="uploadifyQueue"></div>');
 					} else {
