@@ -77,30 +77,32 @@ form {
 }
 
 /*
-Logo
+Top bar
 ---------------------------------------
 */
 
-#page-top-outer {
+#page-top {
 	background: url(../images/shared/top_bg.jpg) top center repeat-x;
 	border-bottom: 1px solid #7e7e7e;
+	display: block;
 	height: 92px;
 }
 
-#page-top {
+#page-top  #name {
+	color: #CCCCCC;
 	margin: 0 auto;
-	max-width: 1260px;
-	min-width: 850px;
-	position: relative;
+	position: absolute;
+	top: 25px;
+	left: 13px;
 }
 
-#logo {
-	float: left;
-	margin: 45px 0 0 15px;
-}
-
-#logo a {
-	display: block;
+#page-top  #slogan {
+	color: #CCCCCC;
+	font-size: 10px;
+	margin: 0 auto;
+	position: absolute;
+	top: 45px;
+	left: 13px;
 }
 
 /*
@@ -108,121 +110,29 @@ Navigation
 ---------------------------------------
 */
 
-.nav-outer-repeat {
-	background: url(../images/shared/nav/repeat.jpg) repeat-x;
-	height: 77px;
-}
-
-.nav-outer {
-	margin: 0 auto;
-	max-width: 1260px;
-	min-width: 850px;
-}
-
-#nav-right {
-	float: right;
-	position: relative;
-	width: 225px;
-	z-index: 0;
-}
-
-#nav-right a {
-	display: block;
-	float: left;
-	margin: 0px 0 0 0;
-}
-
-.account-content {
-	background: #454545 url(../images/shared/nav/account_drop_bg.gif)
-		no-repeat bottom;
-	display: none;
-	left: 5px;
-	padding-bottom: 20px;
-	position: absolute;
-	top: 30px;
-	width: 170px;
-}
-
-.account-drop-inner {
-	font-size: 0px;
-	line-height: 0px;
-	margin: 20px auto 0 auto;
-	width: 140px;
-}
-
-.showhide-account {
-	cursor: pointer;
-	display: block;
-	float: left;
-	margin: 10px 5px 0 5px;
-}
-
-.account-drop-inner a {
-	color: #fff;
-	font-size: 12px;
-	font-weight: bold;
-	line-height: 16px;
-	margin: 0 0 0 0;
-	padding: 0 0 0 0;
-}
-
-.account-drop-inner a:hover {
-	color: #94b52c;
-}
-
-.acc-line {
-	background: url(../images/shared/nav/account_line.gif) no-repeat 0 7px;
-	font-size: 0px;
-	height: 14px;
-	line-height: 0px;
-	margin-top: 0px;
-	padding: 0;
-}
-
-a#logout {
-	margin: 10px 0 0 5px;
-}
-
-a#acc-settings {
-	background: url(../images/shared/nav/icon_acc_settings.gif) no-repeat 0
-		2px;
-	padding: 0 0 0 20px;
-}
-
-a#acc-details {
-	background: url(../images/shared/nav/icon_acc_personal.gif) no-repeat 0
-		2px;
-	padding: 0 0 0 20px;
-}
-
 /* ================================================================ 
 This copyright notice must be untouched at all times. The original version of this stylesheet and the associated (x)html is available at http://www.cssplay.co.uk/menus/pro_dropline.html
 Copyright (c) 2005-2007 Stu Nicholls. All rights reserved. This stylesheet and the associated (x)html may be modified in any way to fit your requirements.
 =================================================================== */
 
 .nav {
-	float: left;
+	background: url(../images/shared/nav/repeat.jpg) repeat-x;
 	font-family: Tahoma;
 	font-size: 13px;
-	height: 38px;
+	height: 77px;
 	position: relative;
-	width: 600px;
+	width: 100%;
 	min-width: 600px;
 	z-index: 500;
+	margin: 0px;
 }
 
-.nav-divider {
-	background: url(../images/shared/nav/divider.jpg) top no-repeat;
-	float: left;
-	height: 40px;
-	width: 15px;
+.nav ul {
+	width: 100%;
+	display: inline-block;
 }
 
-.nav .table {
-	display: table;
-}
-
-.nav .select,.nav .current {
+.nav .select,.nav .select .current {
 	display: table-cell;
 	float: left;
 	list-style: none;
@@ -231,11 +141,12 @@ Copyright (c) 2005-2007 Stu Nicholls. All rights reserved. This stylesheet and t
 	white-space: nowrap;
 }
 
-.nav li {
+.nav .select li {
 	float: left;
 	height: auto;
 	margin: 0;
-	padding: 0;
+	padding: 0px 15px 0px 0px;
+	background: url(../images/shared/nav/divider.jpg) right no-repeat;
 }
 
 .nav .select a {
@@ -249,7 +160,7 @@ Copyright (c) 2005-2007 Stu Nicholls. All rights reserved. This stylesheet and t
 	white-space: nowrap;
 }
 
-.nav .current a {
+.nav .select .current a {
 	background: url(../images/shared/nav/pro_line_1.gif);
 	color: #fff;
 	display: block;
@@ -261,7 +172,7 @@ Copyright (c) 2005-2007 Stu Nicholls. All rights reserved. This stylesheet and t
 	white-space: nowrap;
 }
 
-.nav .current a b {
+.nav .select .current a strong {
 	background: url(../images/shared/nav/pro_line_1.gif) right top;
 	display: block;
 	padding: 0 20px 0 10px;
@@ -274,7 +185,7 @@ Copyright (c) 2005-2007 Stu Nicholls. All rights reserved. This stylesheet and t
 	padding: 0 0 0 10px;
 }
 
-.nav .select a:hover b,.nav .select li:hover a b {
+.nav .select a:hover strong,.nav .select li:hover a strong {
 	background: url(../images/shared/nav/pro_line_1.gif) right top;
 	cursor: pointer;
 	display: block;
@@ -282,71 +193,40 @@ Copyright (c) 2005-2007 Stu Nicholls. All rights reserved. This stylesheet and t
 	padding: 0 20px 0 10px;
 }
 
-.nav .select_sub {
-	display: none;
-	margin: 0 0 0 10px;
+/*
+Breadcrumb
+---------------------------------------
+*/
+
+.nav .breadcrumb li {
+	display: inline-block;
+	margin-top: 17px;
 }
 
-/* IE6 only */
-.nav table {
-	border-collapse: collapse;
-	font-size: 1em;
-	height: 0;
-	margin: -1px;
-	width: 0;
+.nav .breadcrumb li.intro strong {
+	color: #996699;
+	padding-left: 17px;
 }
 
-.nav .sub {
-	display: table;
-	list-style: none;
-	/* margin: 0 auto; */
-	padding: 0;
+.nav .breadcrumb li.current strong {
+	color: #00CC33;
+	text-decoration: none;
+	background: url('../images/shared/nav/arrow.png') no-repeat left;
+	margin-left: 5px;
+	padding-left: 20px;
 }
 
-.nav .sub_active .current_sub a,.nav .sub_active a:hover {
-	background: transparent;
+.nav .breadcrumb li a {
 	color: #fff;
+	text-decoration: underline;
+	background: url('../images/shared/nav/arrow.png') no-repeat left;
+	margin-left: 5px;
+	padding-left: 20px;
 }
 
-.nav .select :hover .select_sub,.nav .current .show {
-	background: url(../images/shared/nav/back_0.gif);
-	display: block;
-	left: 0;
-	padding: 0;
-	position: absolute;
-	text-align: left;
-	top: 37px;
-	width: 750px;
-	z-index: 100;
-}
-
-.nav .current .show {
-	z-index: 10;
-}
-
-.nav .select :hover .sub li a,.nav .current .show .sub li a {
-	background: transparent;
-	border: 0;
+.nav .breadcrumb li a:hover {
 	color: #fff;
-	font-weight: bold;
-	font-size: 13px;
-	display: block;
-	float: left;
-	margin: 0;
-	padding: 0 10px 0 10px;
-	white-space: nowrap;
-}
-
-.nav .current .sub li.sub_show a {
-	background: url(../images/shared/nav/menus/back_1.gif);
-	color: #94b52c;
-	cursor: default;
-}
-
-.nav .select :hover .sub li a:hover,.nav .current .sub li a:hover {
-	background: url(../images/shared/nav/menus/back_1.gif);
-	color: #94b52c;
-	visibility: visible;
+	text-decoration: none;
 }
 
 /*
@@ -360,22 +240,20 @@ Main content
 
 #content-outer {
 	background: url(../images/shared/content_repeat.jpg) repeat-x;
-}
-
-#content {
 	color: #333;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	line-height: 18px;
 	margin: 0 auto 0 auto;
-	max-width: 1260px;
-	min-width: 780px;
 	padding: 35px 0px 30px 0px;
 }
 
 #content-table {
 	font-size: 0px;
 	line-height: 0px;
+	border: 0px;
+	padding: 0px;
+	width: 100%;
 }
 
 #content-table th.sized {
