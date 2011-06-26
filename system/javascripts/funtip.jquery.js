@@ -1,4 +1,7 @@
 /*
+ * By using this application, you are bound the license agreement set forth on
+ * this page: http://docs.forwardfour.com/index.php/License
+ * 
  * "Fun tip" is a simple plugin which adds fancy CSS3 styles to plain text, password, and textarea inputs.
  * In addition to the styles, animated tips can be displayed on the right side of the input, which will 
  * give the web designer an easy to add helpful hints to add front-end validation.
@@ -6,6 +9,13 @@
 
 (function($) {
 	$(document).ready(function() {
+	//A helper plugin, which will detect if an element has an attribute
+		$.fn.hasAttr = function(attr) {
+			var attrVal = this.attr(attr);
+			
+			return (attrVal !== undefined) && (attrVal !== false);
+		}; 
+		
 	//The fun tip plugin itself
 		$.fn.funtip = function(options) {
 		/*
@@ -67,6 +77,9 @@
 		//Calculate the overall width of the container when stretched to fit the tip box
 		//Add 12px to accommodate for the padding
 			var width = parseFloat(defaults.inputWidth.replace(/[^0-9]/g, '')) + parseFloat(defaults.tipWidth.replace(/[^0-9]/g, '')) + 12 + 'px';
+			 
+		//The variable will track whether or not the system triggered the focus/blur event, and slide the tips accordingly
+			var autoTriggered = false;
 			
 		//Apply this plugin to each of the selected objects
 			this.each(function() {
@@ -93,33 +106,55 @@
 				container.css(glowBox);
 				tipBox.css(tip);
 				
+			//Convert each class to the respective HTML5 component, and vice versa
+			//Requirements
+				if (input.hasClass('required')) {
+					input.attr('required', 'required');
+				}
+				
+				if (input.hasAttr('required') && !Modernizr.input.required) {
+					input.addClass('required');
+				} else {
+					input.removeClass('required');
+				}
+				
+			//Email fields
+			//The field type attribute cannot be changed for security purposes, and there isn't a work-around :(
+				if (input.attr('type') == 'email' && !Modernizr.inputtypes.email) {
+					input.addClass('email');
+				} else {
+					input.removeClass('email');
+				}
+				
 			/*
 			Input field event listeners
 			--------------------------------------------- 
 			*/	
 				
 			//Listen for mouse and click events to change the container UI
-				input.focus(function() {										
-				//Adjust the input field
-					input.css({
-						'border-top-right-radius' : '0px',
-						'border-bottom-right-radius' : '0px',
-						'border-right' : '2px solid #5F5F5F'
-					});
-					
-				//Stretch the container
-					container.css(glowBoxActive).animate({
-						'width' : width
-					}, defaults.borderStretchTime);				
-				
-				//Show the tip
-					if (!input.hasClass('funtipInvalidField')) {
-						var showMessage = $.fn.funtip.message(message, message.standard, defaults.standard);
-						tipBox.text(showMessage).css(tip).fadeIn(defaults.borderStretchTime);
-						container.css({
-							'background-color' : defaults.tipColorDefault
+				input.focus(function() {
+				//Do not slide the tip out if the system triggered this focus event
+					if (!autoTriggered) {
+					//Adjust the input field
+						input.css({
+							'border-top-right-radius' : '0px',
+							'border-bottom-right-radius' : '0px',
+							'border-right' : '2px solid #5F5F5F'
 						});
 						
+					//Stretch the container
+						container.css(glowBoxActive).animate({
+							'width' : width
+						}, defaults.borderStretchTime);				
+					
+					//Show the tip
+						if (!input.hasClass('funtipInvalidField')) {
+							var showMessage = $.fn.funtip.message(message, message.standard, defaults.standard);
+							tipBox.text(showMessage).css(tip).fadeIn(defaults.borderStretchTime);
+							container.css({
+								'background-color' : defaults.tipColorDefault
+							});
+						}
 					}
 				}).blur(function() {
 				/*
@@ -131,72 +166,113 @@
 					var showMessage;
 					
 				//Check if this field is required
-					if (input.hasClass('required')) {
-						$.fn.funtip.validate.required(input);
-						showMessage = $.fn.funtip.message(message, message.required, defaults.required);
+					if (input.hasClass('required') || input.hasAttr('required')) {
+					//Use this plugin for validation if the browser does not support this kind of HTML5 validation
+						if (!Modernizr.input.required) {
+							$.fn.funtip.validate.required(input);
+							showMessage = $.fn.funtip.message(message, message.required, defaults.required);
+					//Remove the invalid message (if any), and use browser support
+						} else {
+							input.removeClass('funtipInvalidField');
+						}
+					//The same pattern follows in the ones below...
 					}
 					
 				//Check if this field is numeric
-					if ((!input.hasClass('funtipInvalidField') || !input.hasClass('required')) && input.hasClass('numeric')) {
+					if ((!input.hasClass('funtipInvalidField') || (!input.hasClass('required') && !input.hasAttr('required'))) && input.hasClass('numeric')) {
 						$.fn.funtip.validate.numeric(input);
 						showMessage = $.fn.funtip.message(message, message.error, defaults.error);
 					}
 					
 				//Check if this field will carry an email address
-					if ((!input.hasClass('funtipInvalidField') || !input.hasClass('required')) && input.hasClass('email')) {
-						$.fn.funtip.validate.email(input);
-						showMessage = $.fn.funtip.message(message, message.error, defaults.error);
+					if ((!input.hasClass('funtipInvalidField') || (!input.hasClass('required') && !input.hasAttr('required'))) && (input.hasClass('email')  || input.attr('type') == "email")) {
+						if (!Modernizr.inputtypes.email) {
+							$.fn.funtip.validate.email(input);
+							showMessage = $.fn.funtip.message(message, message.error, defaults.error);
+						} else {
+							input.removeClass('funtipInvalidField');
+						}
 					}
 					
 				//Check if this field has a minimium input limit
-					if ((!input.hasClass('funtipInvalidField') || !input.hasClass('required')) && input.attr('class') != undefined && input.attr('class').indexOf('min') !== -1) {
+					if ((!input.hasClass('funtipInvalidField') || (!input.hasClass('required') && !input.hasAttr('required'))) && input.hasAttr('class') && input.attr('class').indexOf('min') !== -1) {
 						$.fn.funtip.validate.min(input);
 						showMessage = $.fn.funtip.message(message, message.error, defaults.error);
 					}
 					
 				//Check if this field has a maxmium input limit
-					if ((!input.hasClass('funtipInvalidField') || !input.hasClass('required')) && input.attr('class') != undefined && input.attr('class').indexOf('max') !== -1) {
+					if ((!input.hasClass('funtipInvalidField') || (!input.hasClass('required') && !input.hasAttr('required'))) && input.hasAttr('class') && input.attr('class').indexOf('max') !== -1) {
 						$.fn.funtip.validate.max(input);
 						showMessage = $.fn.funtip.message(message, message.error, defaults.error);
 					}
 					
 				//Adjust the elements as required
-					if (!input.hasClass('funtipInvalidField')) {						
-					//Adjust the input field, retract the container, and hide the tip, if told to do so
-						if (input.hasClass('noHide') || !defaults.hideTipOnSuccess) {
-							showMessage = $.fn.funtip.message(message, message.success, defaults.success);
-							
-							tipBox.text(showMessage);
-							container.removeAttr('style').css(glowBox).css({
-								'background-color' : defaults.tipColorGood,
-								'width' : width
-							});
-						} else {
-							input.css({
-								'border-top-right-radius' : defaults.borderRadius,
-								'border-bottom-right-radius' : defaults.borderRadius,
-								'border-right' : '0px solid #FFFFFF'
-							});
-							
-							container.removeAttr('style').css(glowBox).css({
-								'width' : width
-							}).animate({
-								'width' : defaults.inputWidth
-							}, defaults.borderStretchTime);
-							
-							tipBox.text('').fadeOut(defaults.borderStretchTime).removeAttr('style');
+					if (!input.hasClass('funtipInvalidField')) {
+					//Do not slide the tip in (since it wasn't slid out) if the system triggered this blur event
+						if (!autoTriggered) {
+						//Keep the tip out if the plugin is set to show it on validation success
+							if (input.hasClass('noHide') || !defaults.hideTipOnSuccess) {
+								showMessage = $.fn.funtip.message(message, message.success, defaults.success);
+								
+							//Change the tip background and message
+								tipBox.text(showMessage);
+								container.removeAttr('style').css(glowBox).css({
+									'background-color' : defaults.tipColorGood,
+									'width' : width
+								});
+						//Slide the tip in if the plugin is set to hide it on validation success
+							} else {
+							//Adjust the input field
+								input.css({
+									'border-top-right-radius' : defaults.borderRadius,
+									'border-bottom-right-radius' : defaults.borderRadius,
+									'border-right' : '0px solid #FFFFFF'
+								});
+								
+							//Retract the container
+								container.removeAttr('style').css(glowBox).css({
+									'width' : width
+								}).animate({
+									'width' : defaults.inputWidth
+								}, defaults.borderStretchTime);
+								
+							//Hide the tip
+								tipBox.text('').fadeOut(defaults.borderStretchTime).removeAttr('style');
+							}
 						}
 					} else {
-					//Remove the container focus color, but maintain its width
-						container.removeAttr('style').css(glowBox).css({
-							'width' : width
-						});
+					//These actions will occur if the *user* triggered the validation message display
+						if (!autoTriggered) {
+						//Remove the container focus color, but maintain its width
+							container.removeAttr('style').css(glowBox).css({
+								'width' : width
+							});
+							
+						//Highlight the tip and display the required message
+							tipBox.text(showMessage);
+							container.css({
+								'background-color' : defaults.tipColorBad
+							});
+					//These actions will occur if the *system* triggered the validation message display
+						} else {							
+						//Adjust the input field
+							input.css({
+								'border-top-right-radius' : '0px',
+								'border-bottom-right-radius' : '0px',
+								'border-right' : '2px solid #5F5F5F'
+							});
+							
+						//Stretch the container
+							container.css(glowBox).css({
+								'width' : width
+							}, defaults.borderStretchTime);				
 						
-					//Highlight the tip and display the required message
-						tipBox.text(showMessage);
-						container.css({
-							'background-color' : defaults.tipColorBad
-						});
+						//Show the tip
+							tipBox.text(showMessage).css(tip).fadeIn(defaults.borderStretchTime);
+							container.css({
+								'background-color' : defaults.tipColorBad
+							});
+						}
 					}
 				});
 				
@@ -262,19 +338,27 @@
 		*/
 			var fields = this;
 			
-			defaults.parentForm.submit(function(event) {
+			defaults.parentForm.submit(function(event) {				
 				var canSubmit = true;
+				autoTriggered = true;
 				
-			//Find all empty required fields
+			//Find all invalid fields
 				fields.each(function() {
 					var field = $(this);
 					
+				//The easiest way to check to invalid fields it to manually focus and blur them all, and the above code will handle them
+					fields.focus().blur();
+					
+				//Check to see if an invalid field was reached and stop there
 					if (field.hasClass('required') && (field.hasClass('funtipInvalidField') || field.val() == '')) {
 						canSubmit = false;
 						return false;
 					}
 				});
 				
+				autoTriggered = false;
+				
+			//Prevent form submission if validation failed
 				if (!canSubmit) {
 					event.preventDefault();
 				}
@@ -295,7 +379,7 @@
 		$.fn.funtip.validate = {
 		//A base method for handling optional validations with an supplied condition
 			base : function(input, condition) {
-				if ((!input.hasClass('required') && input.val().length == 0) || (input.val().length > 0 && condition)) {
+				if ((!input.hasClass('required') && !input.hasAttr('required') && input.val().length == 0) || (input.val().length > 0 && condition)) {
 					input.removeClass('funtipInvalidField');
 					return true;
 				} else {
@@ -317,13 +401,7 @@
 		
 		//Check if only numbers are provided
 			numeric : function(input) {
-				if ((!input.hasClass('required') && input.val().length == 0) || (input.val().length > 0 && !isNaN(input.val()))) {
-					input.removeClass('funtipInvalidField');
-					return true;
-				} else {
-					input.addClass('funtipInvalidField');
-					return false;
-				}
+				return $.fn.funtip.validate.base(input, !isNaN(input.val()));
 			},
 			
 		//Check if an email address is provided
