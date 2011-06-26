@@ -1,4 +1,9 @@
 /*
+ * By using this application, you are bound the license agreement set forth on
+ * this page: http://docs.forwardfour.com/index.php/License
+*/
+
+/*
 General
 ---------------------------------------
 */
@@ -8,19 +13,31 @@ img {
 }
 
 textarea {
-	font-family: Arial;
+	font-family: Arial, Helvetica, sans-serif;
+	overflow: auto;
 }
 
-span.require {
-	color: #FF0000;
+/* A fix for new HTML5 elements which are not compatable with older browsers */
+header, nav, section, article, figure, figcaption, aside, footer {
+	display: block;	
 }
 
-/* CSS replacement for the align attribute which is deprecated in HTML5 */
+/* CSS replacements for the align attribute which is deprecated in HTML5 */
+.left {
+	text-align: left;
+}
+
 .center {
 	text-align: center;
 }
 
+.right {
+	text-align: right;
+}
+
+/* Visibility options */
 .hide {
+	display: table-cell;
 	display: none;
 }
 
@@ -34,7 +51,94 @@ span.require {
 }
 
 /*
-Data Table Styles
+Validation and validation fallback
+---------------------------------------
+*/
+
+.require {
+	color: #FF0000;
+}
+
+.invalid {
+	border: #972324 solid 3px;
+	box-shadow : 0px 0px 3px #972324;
+}
+
+/*
+Toolbar
+---------------------------------------
+*/
+
+ul.toolbar {
+	margin: 0px 20px 0px 20px;
+	padding: 0px 5px 0px 5px;
+	background: #eee;
+	border: #ccc solid thin;
+	min-height: 30px;
+	height: 30px;
+}
+
+ul.toolbar li {
+	display: inline-block;
+	padding-top: 10px;
+	padding-left: 7px;
+}
+
+/*
+Toolbar sample icon set
+---------------------------------------
+*/
+
+ul.toolbar li a {
+	background-position: left;
+	padding-top: 7px;
+	padding-left: 30px;
+	padding-right: 5px;
+	margin-top: 5px;
+}
+
+ul.toolbar li a.new {
+	background: url(../images/common/toolbar_sprite.png) no-repeat;
+	background-position: 0px 0px;
+}
+
+ul.toolbar li a.new:hover {
+	background: url(../images/common/toolbar_sprite.png) no-repeat;
+	background-position: 0px -22px;
+}
+
+ul.toolbar li a.settings {
+	background: url(../images/common/toolbar_sprite.png) no-repeat;
+	background-position: 0px -44px;
+}
+
+ul.toolbar li a.settings:hover {
+	background: url(../images/common/toolbar_sprite.png) no-repeat;
+	background-position: 0px -66px;
+}
+
+ul.toolbar li a.search {
+	background: url(../images/common/toolbar_sprite.png) no-repeat;
+	background-position: 0px -88px;
+}
+
+ul.toolbar li a.search:hover {
+	background: url(../images/common/toolbar_sprite.png) no-repeat;
+	background-position: 0px -110px;
+}
+
+ul.toolbar li a.back {
+	background: url(../images/common/toolbar_sprite.png) no-repeat;
+	background-position: 0px -132px;
+}
+
+ul.toolbar li a.back:hover {
+	background: url(../images/common/toolbar_sprite.png) no-repeat;
+	background-position: 0px -154px;
+}
+
+/*
+Data table styles
 ---------------------------------------
 */
 
@@ -43,6 +147,7 @@ Data Table Styles
 	border: 0px;
 	padding: 0px;
 	width: 100%;
+	clear:both;
 }
 
 #dataTable tr th {
@@ -57,7 +162,7 @@ Data Table Styles
 
 #dataTable tr th {
 	color: #fff;
-	font-family: Tahoma;
+	font-family: Tahoma, Geneva, sans-serif;
 	font-size: 13px;
 	font-weight: bold;
 	line-height: 14px;
@@ -97,4 +202,79 @@ Data Table Styles
 
 #dataTable tr:hover {
 	background: #e3eceb;
+}
+
+/*
+Data table sample icon set
+---------------------------------------
+*/
+
+#dataTable a.dragger {
+	background: url(../images/common/actions_sprite.png) left no-repeat;
+	padding-left: 11px;
+	padding-top: 7px;
+	margin: 2px;
+	background-position: -5px 0px;
+}
+
+#dataTable a.dragger:hover {
+	background-position: -28px 0px;
+	cursor: move;
+	cursor: grab;
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+}
+
+#dataTable a.dragger:active {
+	cursor: move;
+	cursor: grabbing;
+	cursor: -moz-grabbing;
+	cursor: -webkit-grabbing;
+}
+
+#dataTable a.eyeShow {
+	background: url(../images/common/actions_sprite.png) left no-repeat;
+	padding-left: 22px;
+	margin: 2px;
+	background-position: 0px -87px;
+}
+
+#dataTable a.eyeShow:active {
+	background-position: -22px -87px;
+}
+
+#dataTable a.info {
+	background: url(../images/common/actions_sprite.png) left no-repeat;
+	padding-left: 22px;
+	padding-top: 7px;
+	margin: 2px;
+	background-position: 0px -22px;
+}
+
+#dataTable a.info:hover {
+	background-position: -22px -22px;
+}
+
+#dataTable a.edit {
+	background: url(../images/common/actions_sprite.png) left no-repeat;
+	padding-left: 22px;
+	padding-top: 7px;
+	margin: 2px;
+	background-position: 0px -44px;
+}
+
+#dataTable a.edit:hover {
+	background-position: -22px -44px;
+}
+
+#dataTable a.delete {
+	background: url(../images/common/actions_sprite.png) left no-repeat;
+	padding-left: 22px;
+	padding-top: 7px;
+	margin: 2px;
+	background-position: 0px -66px;
+}
+
+#dataTable a.delete:hover {
+	background-position: -22px -66px;
 }
