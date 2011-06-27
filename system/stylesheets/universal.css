@@ -147,7 +147,7 @@ Data table styles
 ---------------------------------------
 */
 
-#dataTable {
+.dataTable {
 	margin-bottom: 20px;
 	border: 0px;
 	padding: 0px;
@@ -155,7 +155,7 @@ Data table styles
 	clear:both;
 }
 
-#dataTable tr th {
+.dataTable tr th {
 	border: 1px solid #373737;
 	height: 50px;
 	text-align: left;
@@ -165,7 +165,7 @@ Data table styles
 	padding: 0px 0 0 0;
 }
 
-#dataTable tr th {
+.dataTable tr th {
 	color: #fff;
 	font-family: Tahoma, Geneva, sans-serif;
 	font-size: 13px;
@@ -174,38 +174,38 @@ Data table styles
 	padding-left: 10px;
 }
 
-#dataTable tr th a.sort {
+.dataTable tr th a.sort {
 	background: url(../images/table/sort_arrow.gif) right no-repeat;
 	margin: 0 0 0 10px;
 	padding: 0 10px 0 0;
 }
 
-#dataTable tr th a:hover {
+.dataTable tr th a:hover {
 	color: #94b52c
 }
 
-#dataTable td {
+.dataTable td {
 	border: 1px solid #d2d2d2;
 	padding: 10px 0 10px 10px;
 }
 
-#dataTable td a {
+.dataTable td a {
 	color: #393939;
 }
 
-#dataTable td a:hover {
+.dataTable td a:hover {
 	text-decoration: underline;
 }
 
-#dataTable tr.odd {
+.dataTable tr.odd {
 	background: #ffffff;
 }
 
-#dataTable tr.even {
+.dataTable tr.even {
 	background: #ececec;
 }
 
-#dataTable tr:hover {
+.dataTable tr:hover {
 	background: #e3eceb;
 }
 
