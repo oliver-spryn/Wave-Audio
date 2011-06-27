@@ -50,6 +50,11 @@ header, nav, section, article, figure, figcaption, aside, footer {
 	display: block;
 }
 
+.spacer {
+	padding: 30px 0px 80px 0px;
+	text-align:center;
+}
+
 /*
 Validation and validation fallback
 ---------------------------------------
@@ -209,7 +214,7 @@ Data table sample icon set
 ---------------------------------------
 */
 
-#dataTable a.dragger {
+.dataTable a.dragger {
 	background: url(../images/common/actions_sprite.png) left no-repeat;
 	padding-left: 11px;
 	padding-top: 7px;
@@ -217,7 +222,7 @@ Data table sample icon set
 	background-position: -5px 0px;
 }
 
-#dataTable a.dragger:hover {
+.dataTable a.dragger:hover {
 	background-position: -28px 0px;
 	cursor: move;
 	cursor: grab;
@@ -225,25 +230,25 @@ Data table sample icon set
 	cursor: -webkit-grab;
 }
 
-#dataTable a.dragger:active {
+.dataTable a.dragger:active {
 	cursor: move;
 	cursor: grabbing;
 	cursor: -moz-grabbing;
 	cursor: -webkit-grabbing;
 }
 
-#dataTable a.eyeShow {
+.dataTable a.eyeShow {
 	background: url(../images/common/actions_sprite.png) left no-repeat;
 	padding-left: 22px;
 	margin: 2px;
 	background-position: 0px -87px;
 }
 
-#dataTable a.eyeShow:active {
+.dataTable a.eyeShow:active {
 	background-position: -22px -87px;
 }
 
-#dataTable a.info {
+.dataTable a.info {
 	background: url(../images/common/actions_sprite.png) left no-repeat;
 	padding-left: 22px;
 	padding-top: 7px;
@@ -251,11 +256,11 @@ Data table sample icon set
 	background-position: 0px -22px;
 }
 
-#dataTable a.info:hover {
+.dataTable a.info:hover {
 	background-position: -22px -22px;
 }
 
-#dataTable a.edit {
+.dataTable a.edit {
 	background: url(../images/common/actions_sprite.png) left no-repeat;
 	padding-left: 22px;
 	padding-top: 7px;
@@ -263,11 +268,11 @@ Data table sample icon set
 	background-position: 0px -44px;
 }
 
-#dataTable a.edit:hover {
+.dataTable a.edit:hover {
 	background-position: -22px -44px;
 }
 
-#dataTable a.delete {
+.dataTable a.delete {
 	background: url(../images/common/actions_sprite.png) left no-repeat;
 	padding-left: 22px;
 	padding-top: 7px;
@@ -275,6 +280,6 @@ Data table sample icon set
 	background-position: 0px -66px;
 }
 
-#dataTable a.delete:hover {
+.dataTable a.delete:hover {
 	background-position: -22px -66px;
 }
