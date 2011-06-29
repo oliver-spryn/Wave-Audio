@@ -15,6 +15,7 @@
  *  - read: A specialized method for reading database values
  *  - update: A specialized method for updating database values, not for modifying a database or table structure
  *  - delete: A specialized method for deleting database values, not for modifying a database or table structure
+ *  - exist: A specialized method for checking if a database value exists
 */
 	
 class Database {
@@ -120,6 +121,11 @@ class Database {
 		}
 	}
 	
+//Return the number of rows from a query
+	public function num($result) {
+		return $result->num_rows;
+	}
+	
 //Run a basic query on the database, and fetch the result
 	public function quick($query, $fetchType = MYSQLI_BOTH) {
 		$result = $this->query($query);
@@ -137,7 +143,7 @@ class Database {
 	
 //This is a base method to Read, Update, and Delete (RUD) database entries
 	private function RUDBase($input) {
-		$query;
+		$query = "";
 		
 	//Parse the input in this loop
 		foreach($input as $argument) {
@@ -249,7 +255,14 @@ class Database {
 		
 	// ... and execute them in the base method
 		return $this->RUDBase($arguments) ? true : false;
-	} 
+	}
+	
+//A specialized method for checking if a database value exists
+	public function exist($query) {
+		$query = $this->connection->query($query);
+	
+		return $query->num_rows > 0 ? true : false;
+	}
 }
 	
 //Instantiate the "Database" class to allow the system easily communicate with the database.
