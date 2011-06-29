@@ -251,14 +251,14 @@ Data table styles
 	font-size: 13px;
 	font-weight: bold;
 	line-height: 14px;
-	padding-left: 10px;
+	padding: 0px 10px 0px 10px;
 	text-align: center;
 }
 
 .dataTable tr th a.sort {
 	background: url(../images/table/sort_arrow.gif) right no-repeat;
 	margin: 0 0 0 10px;
-	padding: 0 10px 0 10px;
+	padding: 0 10px 0 0;
 }
 
 .dataTable tr th a:hover {
