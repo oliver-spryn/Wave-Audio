@@ -12,39 +12,46 @@
 
 class TemplateAdmin {
 //Defined from database or script
-	private $lang;
-	private $name;
-	private $slogan;
-	private $logo;
-	private $templateRoot;
 	private $template;
-	private $headers;
-	private $homePage;
-	private $breadCrumb;
+	private $footer;
 	
 //Defined on as-needed basis
 	public $title;
-	public $includeTop;
-	public $includeBottom;
+	public $byLine;
 	
 //Setup the database-driven variables
 	public function __construct() {
+	/*
+	 * There is no longer anything for this constructor method to run because of a serious bug
+	 * it caused in files, mainly in dynamic JS files, which included the system's super core,
+	 * but did not utilize this self-instantiating class. Since this class relied on the 
+	 * "Config" class created during the setup, any files which used the core, but did not rely
+	 * on the "Config" class, were giving errors, and disrupting normal operations.
+	 * 
+	 * Now, these dynamic variables will only be pulled from pages which call the "top" method,
+	 * and are certain to have access to the "Config" class.
+	*/
+	}
+	
+//Import the template beginning
+	public function top() {
 		global $db, $config;
 		
 	//Site information
 		$templateData = $db->quick("SELECT * FROM `config` WHERE `id` = '1'");
-		$this->name = $templateData["name"];
-		$this->slogan = $templateData["slogan"];
-		$this->template = $templateData["template"];
-		$this->lang = " lang=\"en-US\"";
+		$siteName = $templateData['name'];
+		$slogan = $templateData['slogan'];
+		$this->template = $templateData['template'];
+		$lang = " lang=\"en-US\"";
+		$this->footer = $templateData['footer'];
 		
 	//Grab the logo URL
 		$logoGrabber = glob($config->installRoot . "system/images/logo.{png,jpg,jpeg,gif,bmp}", GLOB_BRACE);
 		$logoInfo = pathinfo($logoGrabber[0]);
-		$this->logo = ROOT . "system/images/" . $logoInfo['basename'];
+		$logo = ROOT . "system/images/" . $logoInfo['basename'];
 		
 	//Generate the template root URL
-		$this->templateRoot = ROOT . "system/templates/desktop/" . $this->template . "/";
+		$templateRoot = ROOT . "system/templates/desktop/" . $this->template . "/";
 		
 	//Check if this is the home page
 		/*$pageData = $db->query("SELECT * FROM `pages` WHERE `position` = '1' AND `parent` = ''");
@@ -56,17 +63,17 @@ class TemplateAdmin {
 		}*/
 		
 	//Create the bread crumb navigation
-		$this->breadCrumb = "<ul>\n";
+		/*$breadCrumb = "<ul>\n";
 		
 		if (Authentication::loggedIn()) {
 			//To-DO
 		} else {				
-			if ($this->homePage) {
-				$this->breadCrumb .= "<li class=\"current\"><a href=\"" . ROOT . $pageData['url'] . "\">" . $pageData['title'] . "</a></li>\n";
+			if ($homePage) {
+				$breadCrumb .= "<li class=\"current\"><a href=\"" . ROOT . $pageData['url'] . "\">" . $pageData['title'] . "</a></li>\n";
 			}
 		}
 		
-		$this->breadCrumb .= "</ul>";
+		$breadCrumb .= "</ul>";*/
 		
 	//SEO information
 		$SEOData = $db->query("SELECT * FROM `seo`");
@@ -76,7 +83,7 @@ class TemplateAdmin {
 			$SEOMeta .= $data['meta'] . "\n";
 		}
 		
-		$this->headers = "<base href=\"" . ROOT . "\">
+		$headers = "<base href=\"" . ROOT . "\">
 <meta charset=\"UTF-8\">
 <meta name=\"robots\" content=\"index,follow\">
 <meta name=\"googlebot\" content=\"index,follow\">
@@ -85,21 +92,9 @@ class TemplateAdmin {
 <link rel=\"stylesheet\" href=\"" . ROOT . "system/stylesheets/superpackage.desktop.css\">
 <script src=\"" . ROOT . "system/javascripts/superpackage.desktop.js\"></script>
 ";
-	}
-	
-//Import the template beginning
-	public function top() {
-		global $config;
 		
-		$lang = $this->lang;
 		$title = $this->title;
-		$headers = $this->headers;
-		$logo = $this->logo;
-		$templateRoot = $this->templateRoot;
-		$siteName = $this->name;
-		$slogan = $this->slogan;
-		$homePage = $this->homePage;
-		$breadCrumb = $this->breadCrumb;
+		$byLine = $this->byLine;
 		
 		require_once($config->installRoot . "system/templates/desktop/" . $this->template . "/top.php");
 	}
@@ -108,10 +103,12 @@ class TemplateAdmin {
 	public function bottom() {
 		global $config;
 		
-		require_once($config->installRoot . "system/templates/" . $this->template . "/bottom.php");
+		$footer = $this->footer;
+		
+		require_once($config->installRoot . "system/templates/desktop/" . $this->template . "/bottom.php");
 	}
 }
-	
-//Instantiate the template class
-	$template = new TemplateAdmin();
+
+//Instantiate this class
+	$templateAdmin = new TemplateAdmin();
 ?>
