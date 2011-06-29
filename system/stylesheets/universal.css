@@ -1,6 +1,9 @@
 /*
  * By using this application, you are bound the license agreement set forth on
  * this page: http://docs.forwardfour.com/index.php/License
+ *
+ * Portions of this code were adapted from the admin-skin theme from: 
+ * http://www.netdreams.co.uk/
 */
 
 /*
@@ -37,7 +40,6 @@ header, nav, section, article, figure, figcaption, aside, footer {
 
 /* Visibility options */
 .hide {
-	display: table-cell;
 	display: none;
 }
 
@@ -50,9 +52,23 @@ header, nav, section, article, figure, figcaption, aside, footer {
 	display: block;
 }
 
+/* Misc visual enhancements */
 .spacer {
 	padding: 30px 0px 80px 0px;
 	text-align:center;
+}
+
+.loader {
+	background: url(../images/common/loader.gif) left no-repeat;
+	padding: 10px 0px 0px 75px;
+	display: inline-block;
+	height: 30px;
+	min-height: 30px;
+	font: 18px bolder;
+}
+
+.highlight {
+	background-color: yellow;
 }
 
 /*
@@ -75,10 +91,10 @@ Toolbar
 */
 
 ul.toolbar {
-	margin: 7px 20px 7px 20px;
+	margin: 7px 0px 7px 0px;
 	padding: 0px 5px 0px 5px;
 	background: #eee;
-	border: #ccc solid thin;
+	border: #ccc solid 1px;
 	min-height: 30px;
 	height: 30px;
 }
@@ -100,6 +116,7 @@ ul.toolbar li a {
 	padding-left: 30px;
 	padding-right: 5px;
 	margin-top: 5px;
+	cursor: pointer;
 }
 
 ul.toolbar li a.new {
@@ -158,20 +175,15 @@ Data table styles
 .dataTable tr th {
 	border: 1px solid #373737;
 	height: 50px;
-	text-align: left;
 	background: url(../images/table/header_background.jpg) repeat-x;
-	font-size: 0px;
-	line-height: 0;
-	padding: 0px 0 0 0;
-}
-
-.dataTable tr th {
+	padding: 0px;
 	color: #fff;
 	font-family: Tahoma, Geneva, sans-serif;
 	font-size: 13px;
 	font-weight: bold;
 	line-height: 14px;
 	padding-left: 10px;
+	text-align: center;
 }
 
 .dataTable tr th a.sort {
@@ -218,68 +230,77 @@ Data table sample icon set
 	background: url(../images/common/actions_sprite.png) left no-repeat;
 	padding-left: 11px;
 	padding-top: 7px;
+	display: inline-block;
 	margin: 2px;
 	background-position: -5px 0px;
 }
 
 .dataTable a.dragger:hover {
 	background-position: -28px 0px;
-	cursor: move;
-	cursor: grab;
-	cursor: -moz-grab;
-	cursor: -webkit-grab;
+	cursor: url(../images/cursors/grab.cur), default;
+	text-decoration: none;
 }
 
 .dataTable a.dragger:active {
-	cursor: move;
-	cursor: grabbing;
-	cursor: -moz-grabbing;
-	cursor: -webkit-grabbing;
+	cursor: url(../images/cursors/grabbing.cur), default;
+	text-decoration: none;
 }
 
 .dataTable a.eyeShow {
 	background: url(../images/common/actions_sprite.png) left no-repeat;
 	padding-left: 22px;
+	display: inline-block;
 	margin: 2px;
 	background-position: 0px -87px;
+	cursor: pointer;
 }
 
 .dataTable a.eyeShow:active {
 	background-position: -22px -87px;
+	text-decoration: none;
 }
 
 .dataTable a.info {
-	background: url(../images/common/actions_sprite.png) left no-repeat;
+	background: url(../images/common/actions_sprite.png) right no-repeat;
 	padding-left: 22px;
 	padding-top: 7px;
+	display: inline-block;
 	margin: 2px;
 	background-position: 0px -22px;
+	cursor: pointer;
 }
 
 .dataTable a.info:hover {
 	background-position: -22px -22px;
+	text-decoration: none;
 }
 
 .dataTable a.edit {
-	background: url(../images/common/actions_sprite.png) left no-repeat;
+	background: url(../images/common/actions_sprite.png) right no-repeat;
 	padding-left: 22px;
 	padding-top: 7px;
+	display: inline-block;
 	margin: 2px;
 	background-position: 0px -44px;
+	cursor: pointer;
 }
 
 .dataTable a.edit:hover {
 	background-position: -22px -44px;
+	text-decoration: none;
 }
 
 .dataTable a.delete {
-	background: url(../images/common/actions_sprite.png) left no-repeat;
+	background: url(../images/common/actions_sprite.png) right no-repeat;
 	padding-left: 22px;
 	padding-top: 7px;
+	display: inline-block;
 	margin: 2px;
 	background-position: 0px -66px;
+	cursor: pointer;
 }
 
 .dataTable a.delete:hover {
 	background-position: -22px -66px;
+	text-decoration: none;
 }
