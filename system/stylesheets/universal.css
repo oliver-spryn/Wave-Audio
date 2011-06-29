@@ -25,7 +25,7 @@ header, nav, section, article, figure, figcaption, aside, footer {
 	display: block;	
 }
 
-/* CSS replacements for the align attribute which is deprecated in HTML5 */
+/* CSS replacements for the align attribute, which is deprecated in HTML5 */
 .left {
 	text-align: left;
 }
@@ -36,6 +36,75 @@ header, nav, section, article, figure, figcaption, aside, footer {
 
 .right {
 	text-align: right;
+}
+
+/* A collection of CSS replacements for the width attribute, which is deprecated in HTML5 */
+.width25 {
+	width: 25px;
+}
+
+.width50 {
+	width: 50px;
+}
+
+.width75 {
+	width: 75px;
+}
+
+.width100 {
+	width: 100px;
+}
+
+.width125 {
+	width: 125px;
+}
+
+.width150 {
+	width: 150px;
+}
+
+.width175 {
+	width: 175px;
+}
+
+.width200 {
+	width: 200px;
+}
+
+.width250 {
+	width: 250px;
+}
+
+.width300 {
+	width: 300px;
+}
+
+.width350 {
+	width: 350px;
+}
+
+.width400 {
+	width: 400px;
+}
+
+.width500 {
+	width: 500px;
+}
+
+.percent25 {
+	width: 25%;
+}
+
+.percent50 {
+	width: 50%;
+}
+
+.percent75 {
+	width: 75%;
+}
+
+.percent100 {
+	width: 100%;
 }
 
 /* Visibility options */
@@ -228,10 +297,10 @@ Data table sample icon set
 
 .dataTable a.dragger {
 	background: url(../images/common/actions_sprite.png) left no-repeat;
-	padding-left: 11px;
-	padding-top: 7px;
 	display: inline-block;
-	margin: 2px;
+	height: 22px;
+	width: 12px;
+	margin: 0px 2px 0px 2px;
 	background-position: -5px 0px;
 }
 
@@ -248,9 +317,10 @@ Data table sample icon set
 
 .dataTable a.eyeShow {
 	background: url(../images/common/actions_sprite.png) left no-repeat;
-	padding-left: 22px;
 	display: inline-block;
-	margin: 2px;
+	height: 14px;
+	width: 22px;
+	margin: 0px 2px 3px 2px;
 	background-position: 0px -87px;
 	cursor: pointer;
 }
@@ -261,11 +331,11 @@ Data table sample icon set
 }
 
 .dataTable a.info {
-	background: url(../images/common/actions_sprite.png) right no-repeat;
-	padding-left: 22px;
-	padding-top: 7px;
+	background: url(../images/common/actions_sprite.png) top left no-repeat;
 	display: inline-block;
-	margin: 2px;
+	height: 22px;
+	width: 22px;
+	margin: 0px 2px 0px 2px;
 	background-position: 0px -22px;
 	cursor: pointer;
 }
@@ -276,11 +346,11 @@ Data table sample icon set
 }
 
 .dataTable a.edit {
-	background: url(../images/common/actions_sprite.png) right no-repeat;
-	padding-left: 22px;
-	padding-top: 7px;
+	background: url(../images/common/actions_sprite.png) top left no-repeat;
 	display: inline-block;
-	margin: 2px;
+	height: 22px;
+	width: 22px;
+	margin: 0px 2px 0px 2px;
 	background-position: 0px -44px;
 	cursor: pointer;
 }
@@ -291,11 +361,11 @@ Data table sample icon set
 }
 
 .dataTable a.delete {
-	background: url(../images/common/actions_sprite.png) right no-repeat;
-	padding-left: 22px;
-	padding-top: 7px;
+	background: url(../images/common/actions_sprite.png) top left no-repeat;
 	display: inline-block;
-	margin: 2px;
+	height: 22px;
+	width: 22px;
+	margin: 0px 2px 0px 2px;
 	background-position: 0px -66px;
 	cursor: pointer;
 }
