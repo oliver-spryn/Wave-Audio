@@ -89,8 +89,8 @@
 			
 		//Dialog options
 			title : '',
-			width : $(document).width() - ($(document).width() * 0.2), //Centered at 80% width
-			height : $(document).height() - ($(document).height() * 0.2), // Centered at 80% height
+			width : $(window).width() - ($(window).width() * 0.2), //Centered at 80% width
+			height : $(window).height() - ($(window).height() * 0.2), // Centered at 80% height
 			buttons : {},
 			dialogSlideTime : 1000,
 			
