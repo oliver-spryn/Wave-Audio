@@ -59,7 +59,7 @@ class Database {
 	public function query($query) {
 	//Run a query on the database an make sure is executed successfully
 		try {
-			if ($result = $this->connection->query($query, MYSQLI_USE_RESULT)) {
+			if ($result = $this->connection->query($query)) {
 				return $result;
 			} else {
 				$error = debug_backtrace();
@@ -259,7 +259,7 @@ class Database {
 	
 //A specialized method for checking if a database value exists
 	public function exist($query) {
-		$query = $this->connection->query($query);
+		$query = $this->query($query);
 	
 		return $query->num_rows > 0 ? true : false;
 	}
