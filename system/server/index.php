@@ -102,7 +102,7 @@
 			}
 	//Import only a single class
 		} else {
-			if (file_exists($file) && id_file($file)) {
+			if (file_exists($file) && is_file($file)) {
 				require_once($classes);
 			} else {
 				die("&quot;" . $classes . "&quot; does not link to an existing class");
