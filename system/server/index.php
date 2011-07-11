@@ -51,12 +51,16 @@
 //Set the directory slashes based on the server's operating system
 	define("SLASHES", $config->operatingSystem == "unix" ? "/" : "\\");
 	
-//Detirmine the root address for the entire site, and include the "http://" if SSL is not active and "https://" if SSL is active
+//Detirmine the root address for the entire site on the local server
 	in_array('HTTPS', $_SERVER) && $_SERVER['HTTPS'] == "on" ? define("PROTOCOL", "https://") : define("PROTOCOL", "http://");
 	define("ROOT", PROTOCOL . $config->installDomain);
 	
+//Detirmine the root address for the entire site on the CDN server
 	PROTOCOL == "https://" ? define("CDN_PROTOCOL", "https://") : define("CDN_PROTOCOL", "http://");
 	define("CDN_ROOT", CDN_PROTOCOL . $config->CDNRoot);
+	
+//Detirmine the root address for the entire site on the local or CDN server, based on configruation settings
+	$config->useCDN ? define("STATIC_ROOT", CDN_ROOT) : define("STATIC_ROOT", ROOT);
 	
 //Include the essential classes within the system's core, with the exception of the configuration script
 	require_once($config->installRoot . "system/server/core/Database.php");
@@ -104,6 +108,8 @@
 		} else {
 			if (file_exists($file) && is_file($file)) {
 				require_once($classes);
+				
+				return true;
 			} else {
 				die("&quot;" . $classes . "&quot; does not link to an existing class");
 			}
