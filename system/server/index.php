@@ -54,6 +54,7 @@
 //Detirmine the root address for the entire site on the local server
 	in_array('HTTPS', $_SERVER) && $_SERVER['HTTPS'] == "on" ? define("PROTOCOL", "https://") : define("PROTOCOL", "http://");
 	define("ROOT", PROTOCOL . $config->installDomain);
+	define("INSTALL_ROOT", $config->installRoot);
 	
 //Detirmine the root address for the entire site on the CDN server
 	PROTOCOL == "https://" ? define("CDN_PROTOCOL", "https://") : define("CDN_PROTOCOL", "http://");
