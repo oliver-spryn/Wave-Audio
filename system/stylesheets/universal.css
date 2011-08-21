@@ -15,9 +15,23 @@ img {
 	border: 0;
 }
 
+blockquote {
+	padding: 7px 0px 7px 20px;
+}
+
 textarea {
 	font-family: Arial, Helvetica, sans-serif;
 	overflow: auto;
+}
+
+textarea.small {
+	width: 450px;
+	height: 150px;
+}
+
+textarea.large {
+	width: 750px;
+	height: 350px;
 }
 
 /* A fix for new HTML5 elements which are not compatable with older browsers */
@@ -121,6 +135,73 @@ header, nav, section, article, figure, figcaption, aside, footer {
 	display: block;
 }
 
+/* Notification message boxes */
+.alertFix {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	text-align: center;
+	z-index: 9999;
+}
+
+.success {
+	padding: 1px 5px 1px 25px;
+	display: inline;
+	background: url(../images/common/indicator_sprite.png) no-repeat 4px -33px #00ff66;
+	border-top: 1px solid #00ff66;
+	border-right: 1px solid #003300;
+	border-bottom: 1px solid #003300;
+	border-left: 1px solid #003300;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	font-size: 13px;
+	font-weight: bolder;
+	color: #000;
+	z-index: 9999;
+}
+
+.error {
+	padding: 1px 5px 1px 25px;
+	display: inline;
+	background: url(../images/common/indicator_sprite.png) no-repeat 4px -69px #ff3333;
+	border-top: 1px solid #ff3333;
+	border-right: 1px solid #990000;
+	border-bottom: 1px solid #990000;
+	border-left: 1px solid #990000;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	font-size: 13px;
+	font-weight: bolder;
+	color: #fff;
+	z-index: 9999;
+}
+
+.message {
+	padding: 1px 5px 1px 25px;
+	display: inline;
+	background: url(../images/common/indicator_sprite.png) no-repeat 4px 2px #ccc;
+	border-top: 1px solid #ccc;
+	border-right: 1px solid #000;
+	border-bottom: 1px solid #000;
+	border-left: 1px solid #000;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	font-size: 13px;
+	font-weight: bolder;
+	color: #000;
+	z-index: 9999;
+}
+
+/* Highlighters */
+.newHighlight, .editHighlight {
+	background-color: yellow;
+}
+
+.deleteHighlight {
+	background-color: #fb6c6c;
+}
+
 /* Misc visual enhancements */
 .spacer {
 	padding: 30px 0px 80px 0px;
@@ -136,8 +217,10 @@ header, nav, section, article, figure, figcaption, aside, footer {
 	font: 18px bolder;
 }
 
-.highlight {
-	background-color: yellow;
+.clipContainer {
+	overflow: hidden;
+	height: 19px;
+	word-wrap: break-word;
 }
 
 /*
@@ -145,13 +228,56 @@ Validation and validation fallback
 ---------------------------------------
 */
 
-.require {
+.require, .important {
 	color: #FF0000;
 }
 
 .invalid {
 	border: #972324 solid 3px;
 	box-shadow : 0px 0px 3px #972324;
+}
+
+/*
+Form layout
+---------------------------------------
+*/
+
+section.formSection {
+	margin: 10px 0px 5px 0px;
+	font-size: 14px;
+}
+
+section.formSection header {
+	border-bottom: 1px solid white;
+	margin-bottom: 10px;
+}
+
+section.formSection header h1 {
+	font-size: 14px;
+	font-weight: bolder;
+}
+
+section.formSection header h1.expand {
+	background: url(../images/common/trigger_visibility.png) no-repeat top right;
+	display: inline;
+	padding-right: 20px;
+}
+
+section.formSection header h1.expand:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+section.formSection header h1.fold {
+	background: url(../images/common/trigger_visibility.png) no-repeat top right;
+	background-position: right -16px;
+	display: inline;
+	padding-right: 20px;
+}
+
+section.formSection header h1.fold:hover {
+	cursor: pointer;
+	text-decoration: underline;
 }
 
 /*
@@ -244,7 +370,7 @@ Data table styles
 .dataTable tr th {
 	border: 1px solid #373737;
 	height: 50px;
-	background: url(../images/table/header_background.jpg) repeat-x;
+	background: url(../images/common/header_background.jpg) repeat-x;
 	padding: 0px;
 	color: #fff;
 	font-family: Tahoma, Geneva, sans-serif;
@@ -256,13 +382,29 @@ Data table styles
 }
 
 .dataTable tr th a.sort {
-	background: url(../images/table/sort_arrow.gif) right no-repeat;
+	background: url(../images/common/sort_arrow.gif) right no-repeat;
 	margin: 0 0 0 10px;
 	padding: 0 10px 0 0;
 }
 
 .dataTable tr th a:hover {
 	color: #94b52c
+}
+
+.dataTable tbody {
+	border: 1px solid #d2d2d2;
+}
+
+.dataTable tr.odd {
+	background: #ffffff;
+}
+
+.dataTable tr.even {
+	background: #ececec;
+}
+
+.dataTable tr:hover {
+	background: #e3eceb;
 }
 
 .dataTable td {
@@ -276,18 +418,6 @@ Data table styles
 
 .dataTable td a:hover {
 	text-decoration: underline;
-}
-
-.dataTable tr.odd {
-	background: #ffffff;
-}
-
-.dataTable tr.even {
-	background: #ececec;
-}
-
-.dataTable tr:hover {
-	background: #e3eceb;
 }
 
 /*
@@ -321,11 +451,26 @@ Data table sample icon set
 	height: 14px;
 	width: 22px;
 	margin: 0px 2px 3px 2px;
-	background-position: 0px -87px;
+	background-position: -22px -87px;
 	cursor: pointer;
 }
 
 .dataTable a.eyeShow:active {
+	background-position: 0px -87px;
+	text-decoration: none;
+}
+
+.dataTable a.eyeHide {
+	background: url(../images/common/actions_sprite.png) left no-repeat;
+	display: inline-block;
+	height: 14px;
+	width: 22px;
+	margin: 0px 2px 3px 2px;
+	background-position: 0px -87px;
+	cursor: pointer;
+}
+
+.dataTable a.eyeHide:active {
 	background-position: -22px -87px;
 	text-decoration: none;
 }
