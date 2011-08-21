@@ -1,156 +1,73 @@
 <!DOCTYPE html>
 <html<?php echo $lang; ?>>
 <head>
-<title><?php echo $siteName; ?> | <?php echo $title; ?></title>
+<title><?php echo $title; ?></title>
 <?php echo $headers; ?>
 <link rel="stylesheet" href="<?php echo $templateRoot;?>stylesheets/style.css">
-<script src="<?php echo $templateRoot; ?>javascripts/navigation.jquery.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?php echo ROOT; ?>system/stylesheets/universal.css">
+<script src="<?php echo ROOT;?>system/javascripts/datapackage.jquery.js"></script>
+<link rel="stylesheet" href="<?php echo ROOT;?>system/stylesheets/universal.css">
+<script src="<?php echo ROOT;?>system/javascripts/global.jquery.js"></script>
 </head>
 <body>
-<header>
+<header class="main">
 <hgroup id="page-top">
 <h1 id="name"><?php echo $siteName; ?></h1>
 <h2 id="slogan"><?php echo $slogan; ?></h2>
 </hgroup>
 
-<nav class="nav">
-<ul class="select">
-<li><a href="#nogo"><strong>Dashboard</strong></a></li>
-<li class="current"><a href="#nogo"><strong>Products</strong></a></li>
+<nav class="pluginBar">
+<ul class="pluginBarLeft">
+<li class="mainItem"><a href="http://localhost/wave_audio/" style="background: url(http://localhost/wave_audio/plugins/home/images/icons/white.png) no-repeat center;" title="Home"></a></li>
+<li class="mainItem"><a href="http://localhost/wave_audio/" style="background: url(http://localhost/wave_audio/plugins/home/images/icons/white.png) no-repeat center;" title="Home"></a></li>
+<li class="mainItem"><a href="http://localhost/wave_audio/" style="background: url(http://localhost/wave_audio/plugins/home/images/icons/white.png) no-repeat center;" title="Home"></a></li>
+<li class="mainItem">
+<span>wot200@gmail.com</span>
+<div>
+<ul>
+<li><strong>Oliver Joseph Michael Spryn11</strong><br /><br /><p>wot200@gmail.com</p></li>
+<li class="divider"></li>
+<li>nice</li>
+<li>nice</li>
+<li>nice</li>
+<li>nice</li>
+<li>nice</li>
+</ul>
+</div>
+</li>
 </ul>
 
-<ul class="breadcrumb">
-<li class="intro"><strong>You are here:</strong></li>
+<ul class="pluginBarRight">
+<li class="mainItem">
+<span>wot200@gmail.com</span>
+<div>
+<ul>
+<li><strong>Oliver Joseph Michael Spryn</strong><br /><br /><p>wot200@gmail.com</p></li>
+<li class="divider"></li>
+<li>nice</li>
+<li>nice</li>
+<li>nice</li>
+<li>nice</li>
+<li>nice</li>
+</ul>
+</div>
+</li>
+<li class="mainItem"><span>Logout</span></li>
+</ul>
+</nav>
+
+<nav class="nav">
+<header>
+<h1>Navigation:</h1>
+</header>
+
+<ul>
 <li><a href="#nogo"><strong>Dashboard</strong></a></li>
-<li class="current"><strong>Products</strong></li>
+<li class="current"><a href="#nogo"><strong>Products</strong></a></li>
 </ul>
 </nav>
 </header>
 
 <article id="content-outer">
-<header id="page-heading">
+<header>
 <h1><?php echo $title; ?></h1>
 </header>
-
-<ul class="toolbar">
-<li><a href="#nogo" class="new">Create Page</a></li>
-<li><a href="#nogo" class="settings">Page Settings</a></li>
-<li><a href="#nogo" class="search">Search for Content</a></li>
-<li><a href="#nogo" class="back">Back</a></li>
-</ul>
-
-<table id="content-table">
-<tbody>
-<tr>
-<th rowspan="3" class="sized"><img src="<?php echo $templateRoot;?>images/shared/side_shadowleft.jpg" alt="" height="300" width="20"></th>
-<th class="topleft"></th>
-<td id="tbl-border-top">&nbsp;</td>
-<th class="topright"></th>
-<th rowspan="3" class="sized"><img src="<?php echo $templateRoot;?>images/shared/side_shadowright.jpg" alt="" height="300" width="20"></th>
-</tr>
-
-<tr>
-<td id="tbl-border-left"></td>
-<td>
-<div id="content-table-inner">
-
-								<table id="dataTable">
-									<tr>
-										<th></th>
-										<th><a class="sort">Last Name</a></th>
-										<th>First Name</th>
-										<th>Email</th>
-										<th>Due</th>
-										<th>Website</th>
-										<th></th>
-									</tr>
-									<tr class="odd">
-										<td><a class="dragger"></a><a class="eyeShow"></a></td>
-										<td>Sabev</td>
-										<td>George</td>
-										<td><a href="">george@mainevent.co.za</a>
-										</td>
-										<td>R250</td>
-										<td><a href="">www.mainevent.co.za</a>
-										</td>
-										<td><a class="info"></a><a class="edit"></a><a class="delete"></a></td>
-									</tr>
-									<tr class="even">
-										<td></td>
-										<td>Sabev</td>
-										<td>George</td>
-										<td><a href="">george@mainevent.co.za</a>
-										</td>
-										<td>R250</td>
-										<td><a href="">www.mainevent.co.za</a>
-										</td>
-										<td><a class="info"></a><a class="edit"></a><a class="delete"></a></td>
-									</tr>
-									<tr class="odd">
-										<td></td>
-										<td>Sabev</td>
-										<td>George</td>
-										<td><a href="">george@mainevent.co.za</a>
-										</td>
-										<td>R250</td>
-										<td><a href="">www.mainevent.co.za</a>
-										</td>
-										<td><a class="info"></a><a class="edit"></a><a class="delete"></a></td>
-									</tr>
-									<tr class="even">
-										<td></td>
-										<td>Sabev</td>
-										<td>George</td>
-										<td><a href="">george@mainevent.co.za</a>
-										</td>
-										<td>R250</td>
-										<td><a href="">www.mainevent.co.za</a>
-										</td>
-										<td><a class="info"></a><a class="edit"></a><a class="delete"></a></td>
-									</tr>
-									<tr class="odd">
-										<td></td>
-										<td>Sabev</td>
-										<td>George</td>
-										<td><a href="">george@mainevent.co.za</a>
-										</td>
-										<td>R250</td>
-										<td><a href="">www.mainevent.co.za</a>
-										</td>
-										<td><a class="info"></a><a class="edit"></a><a class="delete"></a></td>
-									</tr>
-									<tr class="even">
-										<td></td>
-										<td>Sabev</td>
-										<td>George</td>
-										<td><a href="">george@mainevent.co.za</a>
-										</td>
-										<td>R250</td>
-										<td><a href="">www.mainevent.co.za</a>
-										</td>
-										<td><a class="info"></a><a class="edit"></a><a class="delete"></a></td>
-									</tr>
-								</table>
-							</div>
-						</td>
-						<td id="tbl-border-right"></td>
-					</tr>
-
-					<tr>
-						<th class="sized bottomleft"></th>
-						<td id="tbl-border-bottom">&nbsp;</td>
-						<th class="sized bottomright"></th>
-					</tr>
-				</tbody>
-			</table>
-</article>
-
-		
-
-	<div id="footer">
-		<div id="footer-left">Admin Skin © Copyright Internet Dreams
-			Ltd. All rights reserved.</div>
-	</div>
-</body>
-</html>

@@ -16,8 +16,6 @@ body {
 	background: #fff;
 	color: #393939;
 	font-family: Arial;
-	font-size: 0px;
-	line-height: 0;
 }
 
 h1 {
@@ -67,19 +65,14 @@ form {
 	padding: 0;
 }
 
-.clear {
-	clear: both;
-	font-size: 0px;
-	height: 0;
-	line-height: 0px;
-	margin: 0px;
-	padding: 0px;
-}
-
 /*
-Top bar
+Header content
 ---------------------------------------
 */
+
+body header.main {
+	padding-top: 35px; /* Make room for the doc bar */
+}
 
 #page-top {
 	background: url(../images/shared/top_bg.jpg) top center repeat-x;
@@ -88,21 +81,178 @@ Top bar
 	height: 92px;
 }
 
-#page-top  #name {
+#page-top #name {
 	color: #CCCCCC;
 	margin: 0 auto;
 	position: absolute;
-	top: 25px;
+	top: 55px;
 	left: 13px;
 }
 
-#page-top  #slogan {
+#page-top #slogan {
 	color: #CCCCCC;
-	font-size: 10px;
+	font-size: 12px;
 	margin: 0 auto;
 	position: absolute;
-	top: 45px;
+	top: 75px;
 	left: 13px;
+}
+
+/*
+Plugin bar styles
+---------------------------------------
+*/
+
+/* General styles */
+
+nav.pluginBar {
+	position: absolute;
+	width: 100%;
+	top: 0px;
+	left: 0px;
+	height: 35px;
+	background: url(../images/shared/logo.png) no-repeat 5px 3px #2d2d2d;
+	box-shadow: 0px 0px 5px #fff;
+	border-bottom: solid 1px #666;
+}
+
+nav.pluginBar li.lockLI {
+	background: #fff;
+	box-shadow: 0px 0px 10px #fff;
+	border-left: #ccc solid 1px;
+	border-right: #ccc solid 1px;
+}
+
+nav.pluginBar li div {
+	display: none;
+	position: absolute;
+	top: 35px;
+	background: #fff;
+	box-shadow: 0px 0px 10px #fff;
+	border-left: #ccc solid 1px;
+	border-right: #ccc solid 1px;
+	border-bottom: #ccc solid 1px;
+}
+
+nav.pluginBar li div ul {
+	display: block;
+	width: 100%;
+	list-style: none;
+}
+
+nav.pluginBar li div ul li {
+	padding: 3px 15px 0px 15px;
+	margin: 5px 0px 5px 0px;
+}
+
+nav.pluginBar li div ul li a {
+	height: 20px;
+	padding: 3px 15px 0px 15px;
+	margin: 5px 0px 5px 0px;
+}
+
+nav.pluginBar li div ul li.divider {
+	/* padding-top: 1px; Does not display properly in IE7, so break its performance */
+	padding: 0px;
+	margin: 0px;
+	height: 1px;
+	border-top: #ccc solid 1px;
+}
+
+nav.pluginBar li div ul li a:hover {
+	background: #eff3fb;
+}
+
+/* Left-side specific styles */
+
+nav.pluginBar ul.pluginBarLeft {
+	list-style:none;
+	display: inline-block;
+	*display: inline; /* Invalid CSS, but necessary for IE7 to only give the unordered list the width it needs (not 100% by default) :( */
+	height: 35px;
+	padding-left: 47px;
+}
+
+nav.pluginBar ul.pluginBarLeft li.mainItem {
+	display: inline-block;
+	*display: inline; /* Invalid CSS, but necessary for IE7 to display each of the unordered list item in-line :( */
+	zoom: 1; /* Invalid CSS again, but necessary for IE7 to treat the unordered list item as block-level elements :( */
+	vertical-align : top;
+	height: 35px;
+	color: #999;
+}
+
+nav.pluginBar ul.pluginBarLeft li.mainItem:hover {
+	background: #555;
+}
+
+nav.pluginBar ul.pluginBarLeft li.mainItem a {
+	margin: 0px 5px 0px 5px;
+	display: block;
+	height: 35px;
+	min-width: 20px;
+	cursor: pointer;	
+}
+
+nav.pluginBar ul.pluginBarLeft li.mainItem span {
+	margin: 0px 5px 0px 5px;
+	padding-top: 8px;
+	display: block;
+	height: 27px;
+	min-width: 20px;
+	cursor: pointer;	
+}
+
+/* Right-side specific styles */
+
+nav.pluginBar ul.pluginBarRight {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	list-style:none;
+	display: inline-block;
+	*display: inline; /* Invalid CSS, but necessary for IE7 to only give the unordered list the width it needs (not 100% by default) :( */
+	height: 35px;
+	padding-left: 47px;
+}
+
+nav.pluginBar ul.pluginBarRight li.mainItem {
+	display: inline-block;
+	*display: inline; /* Invalid CSS, but necessary for IE7 to display each of the unordered list item in-line :( */
+	zoom: 1; /* Invalid CSS again, but necessary for IE7 to treat the unordered list item as block-level elements :( */
+	vertical-align : top;
+	height: 35px;
+	color: #999;
+}
+
+nav.pluginBar ul.pluginBarRight li.mainItem:hover {
+	background: #555;
+}
+
+nav.pluginBar ul.pluginBarRight li.mainItem a {
+	margin: 0px 5px 0px 5px;
+	display: block;
+	height: 35px;
+	min-width: 20px;
+	cursor: pointer;	
+}
+
+nav.pluginBar ul.pluginBarRight li.mainItem span {
+	margin: 0px 5px 0px 5px;
+	padding-top: 8px;
+	display: block;
+	height: 27px;
+	min-width: 20px;
+	cursor: pointer;	
+}
+
+nav.pluginBar ul.pluginBarRight li.mainItem span {
+	margin: 0px 5px 0px 5px;
+	padding-top: 8px;
+	display: block;
+	height: 27px;
+	min-width: 20px;
+	cursor: pointer;	
 }
 
 /*
@@ -119,20 +269,30 @@ Copyright (c) 2005-2007 Stu Nicholls. All rights reserved. This stylesheet and t
 	background: url(../images/shared/nav/repeat.jpg) repeat-x;
 	font-family: Tahoma;
 	font-size: 13px;
-	height: 77px;
+	height: 35px;
 	position: relative;
 	width: 100%;
 	min-width: 600px;
-	z-index: 500;
 	margin: 0px;
+	z-index: -1; /* IE7 z-index fix */
 }
 
-.nav ul {
-	width: 100%;
+.nav header {
 	display: inline-block;
 }
 
-.nav .select,.nav .select .current {
+.nav h1 {
+	padding: 5px 0px 0px 17px;
+	color: #fff;
+	display: inline-block;
+}
+
+.nav ul {
+	display: inline-block;
+	padding-left: 105px;
+}
+
+.nav, .nav .select .current {
 	display: table-cell;
 	float: left;
 	list-style: none;
@@ -178,14 +338,14 @@ Copyright (c) 2005-2007 Stu Nicholls. All rights reserved. This stylesheet and t
 	padding: 0 20px 0 10px;
 }
 
-.nav .select a:hover,.nav .select li:hover a {
+.nav .select a:hover, .nav .select li:hover a {
 	background: url(../images/shared/nav/pro_line_1.gif);
 	color: #fff;
 	cursor: pointer;
 	padding: 0 0 0 10px;
 }
 
-.nav .select a:hover strong,.nav .select li:hover a strong {
+.nav .select a:hover strong, .nav .select li:hover a strong {
 	background: url(../images/shared/nav/pro_line_1.gif) right top;
 	cursor: pointer;
 	display: block;
@@ -234,8 +394,20 @@ Main content
 ---------------------------------------
 */
 
-#page-heading {
-	margin: 0 0 15px 20px;
+.description h1 {
+	font-size: 14px;
+	font-weight: bolder;
+}
+
+nav h1 {
+	font-size: 14px;
+	font-weight: bolder;
+}
+
+.content h1 {
+	font-size: 14px;
+	font-weight: bolder;
+	margin-top: 35px;
 }
 
 #content-outer {
@@ -245,7 +417,7 @@ Main content
 	font-size: 12px;
 	line-height: 18px;
 	margin: 0 auto 0 auto;
-	padding: 35px 0px 30px 0px;
+	padding: 35px 30px 0px 30px;
 }
 
 #content-table {
@@ -267,8 +439,9 @@ Main content
 
 #content-table-inner {
 	font-size: 12px;
-	line-height: 12px;
+	line-height: 18px;
 	padding: 10px 0 20px 0;
+	vertical-align: top;
 }
 
 #tbl-border-top {
@@ -322,7 +495,7 @@ Footer
 ---------------------------------------
 */
 
-#footer {
+footer {
 	height: 70px;
 	margin: 80px auto 0px auto;
 	padding: 0px 0 0 0;
@@ -331,7 +504,7 @@ Footer
 	max-width: 1260px;
 }
 
-#footer-left {
+footer p {
 	color: #818181;
 	font-size: 11px;
 	line-height: 11px;
@@ -340,16 +513,6 @@ Footer
 	border-top: 1px solid #dbdbdb;
 	border-bottom: 1px solid #dbdbdb;
 	background: url(../images/shared/icon_idlogo.jpg) no-repeat 0 12px;
-}
-
-#footer-left a {
-	color: #818181;
-	text-decoration: none;
-}
-
-#footer-left a.selected,#footer-left a:hover {
-	color: #000;
-	text-decoration: none;
 }
 
 /*
