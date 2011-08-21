@@ -38,6 +38,37 @@ class TemplateAdmin extends TemplateBase {
 	}
 	
 /**
+ * Build the plugin-bar, with all of its links and menus
+ * 
+ * @return     string      An HTML unordered list containing the all of the plugin menu items and links
+ * @since      v0.1 Dev
+ */
+	private function buildPluginBar() {
+	//Get the required API scripts
+		import("API.Plugins");
+		import("API.Templates");
+		
+	//Obtain a reference to all of the plugins
+		$plugins = Plugins::allPluginData();
+		
+	//Obtain information about the currently used administration template
+		$templateData = Templates::currentAdminTemplateInfo();
+		
+	//Build the links and menus for each plugin
+		$return = "<ul class=\"pluginBarLeft\">\n";
+		
+		foreach($plugins as $plugin) {
+			$link = $plugin['type'] == "link" ? " href=\"" . ROOT . $plugin['URL'] . "\"" : "";
+			$return .= "<li><a" . $link . " style=\"background: url(" . ROOT . "plugins/" . $plugin['root'] . "/images/icons/" . $templateData['pluginIconColor'] . ".png) no-repeat center;\" title=\"" . $plugin['name'] . "\"></a></li>\n";
+		}
+		
+		$return .= "</ul>\n";
+		
+	//Output the generated list
+		return $return;
+	}
+	
+/**
  * Import and build the template's beginning
  * 
  * @return     void
@@ -60,6 +91,9 @@ class TemplateAdmin extends TemplateBase {
 		$CDNTemplateRoot = $this->CDNTemplateRoot;
 		$homePage = $this->homePage;
 		$headers = $this->headers;
+		
+	//Get the list of plugin items to add to the plugin-bar
+		$plugins = $this->buildPluginBar();
 		
 	//Include the template
 		require_once(INSTALL_ROOT . "system/templates/desktop/" . $this->template . "/top.php");
