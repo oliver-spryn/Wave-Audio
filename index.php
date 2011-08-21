@@ -1,6 +1,11 @@
 <?php
-require_once("system/server/index.php");
+//Include the system core
+	require_once("system/server/index.php");
 
-$template->title = "The First REAL Page!!!";
-$template->top();
+//Find the module which is intended to display content on the public website area, and call its API class
+	$default = $db->select("SELECT * FROM `users` WHERE", array(
+		"default" => "1"
+	));
+	
+	require_once($default['root'] . "system/server/API/Default.php");
 ?>
