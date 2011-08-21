@@ -14,7 +14,7 @@ class Validate {
 	public static function required($string, $matches = false, $sizeSmall = false, $sizeLarge = false, $sizeEquals = false, $optional = false) {
 		try {
 		//See if the string is empty
-			!$optional && empty($string) ? $error = "A required value was empty." : true;
+			!$optional && empty($string) && !is_numeric($string) ? $error = "A required value was empty." : true;
 			
 			if ($optional && empty($string)) {
 				return $string;
@@ -65,7 +65,7 @@ class Validate {
 	public static function numeric($number, $small = false, $large = false, $equalTo = false, $optional = false) {
 		try {
 		//See if the string is empty
-			!$optional && empty($number) ? $error = "A required value was empty." : true;
+			!$optional && empty($number) && !is_numeric($number) ? $error = "A required value was empty." : true;
 			
 			if ($optional && empty($number)) {
 				return $number;
