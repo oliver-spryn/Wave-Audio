@@ -7,6 +7,7 @@
  *  - __desctruct: The destructor method which will close out a connection to the MySQL server at the end of each page
  *  - query: Run a basic query on the database
  *  - escape: Escape a value for safe storage in the database
+ *  - insertID: Get the ID of the most recent query
  *  - prepare (Private): Prepare stored database values for display
  *  - fetch: Fetch the result of a database query and clean-up all of the values for display
  *  - quick: Run a basic query on the database, and fetch the result
@@ -86,6 +87,11 @@ class Database {
 		return $this->connection->real_escape_string($input);
 	}
 	
+//Get the ID of the most recent query
+	public function insertID() {
+		return $this->connection->insert_id;
+	}
+	
 //Prepare stored database values for display
 	private function prepare($input, $htmlEncode = false, $stripSlashes = true) {		
 		$stripSlashes == true ? $input = stripslashes($input) : false;
@@ -155,7 +161,7 @@ class Database {
 			
 		//Arrays require more logic
 			if (is_array($argument)) {
-				$values;
+				$values = "";
 				
 				foreach($argument as $key => $value) {
 					$values .= "`" . $key . "` = '" . $this->escape($value) . "', ";
